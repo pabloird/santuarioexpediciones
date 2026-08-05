@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# Local tooling / browsers (may contain sessions/credentials)
+.freebuff/
+
+# Design tooling artifacts
+.firecrawl/
+
+# Logs / env
+*.log
+.env
+.env.*
