@@ -614,12 +614,12 @@ html[lang="en"] .main-nav button.nav-link { padding: 10px 9px; font-size: 11.5px
 }
 .rev-card--cta .btn--outline { border-color: var(--paper); color: var(--paper); }
 .rev-card--cta .btn--outline:hover { background: var(--paper); color: var(--green); }
-.rev-card--cta .btn--outline:hover .rev-card__logo--ta { color: var(--green); }
+.rev-card--cta .btn--outline:hover .rev-card__logo--ta { filter: none; }
 .rev-card__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-top: auto; }
 .rev-card__btn { margin-top: auto; }
 .rev-card__actions .btn { display: inline-flex; align-items: center; gap: 9px; }
 .rev-card__logo { width: 20px; height: 20px; flex-shrink: 0; }
-.rev-card__logo--ta { color: var(--paper); }
+.rev-card__logo--ta { width: auto; height: 16px; filter: brightness(0) invert(1); }
 
 /* ---------- CTA bande ---------- */
 .cta-band {
