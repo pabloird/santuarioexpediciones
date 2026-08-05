@@ -466,6 +466,16 @@ html[lang="en"] .main-nav button.nav-link { padding: 10px 9px; font-size: 11.5px
 
 /* ---------- Contacto ---------- */
 .contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-bottom: 56px; }
+.contact-lower { display: grid; grid-template-columns: minmax(280px, 0.9fr) 1.6fr; gap: 22px; margin-bottom: 56px; }
+.contact-card--hours h3 { margin-bottom: 14px; }
+.hours-list { list-style: none; width: 100%; margin: 0 0 22px; padding: 0; display: grid; gap: 8px; }
+.hours-list li { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding-bottom: 8px; border-bottom: 1px dashed rgba(64, 50, 50, 0.16); font-size: 15px; }
+.hours-list span { color: var(--ink); font-weight: 600; }
+.hours-list time { color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.map-wrap { border-radius: 18px; overflow: hidden; border: 1px solid rgba(64, 50, 50, 0.14); min-height: 320px; background: var(--paper-soft); }
+.map-wrap iframe { display: block; }
+.contact-card--hours { text-decoration: none; }
+
 .contact-card {
   display: flex;
   flex-direction: column;
@@ -547,6 +557,8 @@ html[lang="en"] .main-nav button.nav-link { padding: 10px 9px; font-size: 11.5px
   transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease), background var(--dur) var(--ease);
 }
 .rev-platform:hover { transform: translateY(-6px); box-shadow: 0 26px 54px rgba(64, 50, 50, 0.14); border-color: var(--accent); background: var(--paper); }
+.rev-platform__logo { width: 44px; height: 44px; margin-bottom: 2px; }
+.rev-platform__logo--ta { color: var(--green); }
 .rev-platform__name { font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-soft); }
 .rev-platform__score { display: flex; align-items: center; gap: 12px; }
 .rev-platform__score strong { font-family: var(--font-display); font-size: 42px; font-weight: 600; line-height: 1; }
@@ -771,6 +783,7 @@ body.cart-open .cart-scrim { opacity: 1; visibility: visible; }
   .product-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
   .svc-grid { grid-template-columns: 1fr; }
   .contact-grid { grid-template-columns: 1fr; }
+  .contact-lower { grid-template-columns: 1fr; }
   .team-grid { grid-template-columns: 1fr; gap: 52px; }
   .post-grid { grid-template-columns: 1fr; }
   .rev-grid { grid-template-columns: 1fr; }
