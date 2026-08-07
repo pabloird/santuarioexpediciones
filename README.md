@@ -38,7 +38,9 @@ Ou utiliser le script : `bash scripts/serve.sh`
 
 ## Fonctionnalités
 
-- **Site bilingue (es / en)** : sélecteur de langue dans le header, langue mémorisée (`localStorage`), paramètre `?lang=en` pour partager un lien.
+- **Site quadrilingue (es / en / fr / pt)** : sélecteur de langue (dropdown) dans le header, langue mémorisée (`localStorage`), paramètre `?lang=es|en|fr|pt` pour partager un lien.
+- **Cartes d'expéditions générées depuis `js/data.js`** : prix, niveau, min. de personnes, badge « más vendido » (★) et description dépliable « Más info » — une seule source de vérité pour les pages kayak / trips / trekking / etno / réserva.
+- **Novedades dynamiques** : les 4 derniers posts du tableau `POSTS` (`js/data.js`), triés par date, avec photo.
 - **Lightbox produits** : clique sur l'image d'un produit pour l'ouvrir en grand, navigation ‹ › , ajout au panier direct.
 - Panier avec `localStorage`, récapitulatif et **commande envoyée par WhatsApp**.
 - Réservation des services directement **par WhatsApp** (wa.me/56994365496).
@@ -46,14 +48,14 @@ Ou utiliser le script : `bash scripts/serve.sh`
 - Navigation mobile (menu hamburger + dropdown), animations au scroll, galerie circulaire.
 - 100% responsive, `prefers-reduced-motion` respecté.
 
-## Bilinguisme (es / en) — comment mettre à jour
+## Quadrilingue (es / en / fr / pt) — comment mettre à jour
 
-**Une seule source de vérité : `js/i18n.js`.** Chaque clé est un objet `{ es, en }`
-(ou une simple chaîne si le texte est identique dans les deux langues).
+**Une seule source de vérité : `js/i18n.js`.** Chaque clé est un objet `{ es, en, fr, pt }`
+(ou une simple chaîne si le texte est identique dans toutes les langues).
 
 Pour modifier un texte, il suffit d'éditer l'entrée correspondante dans `js/i18n.js` :
 le système affiche automatiquement la bonne langue sur toutes les pages. Il n'y a
-**pas** de page HTML en anglais à dupliquer.
+**pas** de page HTML en anglais/français/portugais à dupliquer.
 
 Conventions :
 
@@ -73,9 +75,14 @@ Conventions :
 - Les textes longs d'une page vivent dans `I18N["<prefix>.*"]`.
 - Les titres de page et meta descriptions sont dans `META[<prefix>]`.
 - Produits, services, catégories et badges : dans `js/data.js`, chaque entrée a un
-  champ espagnol canonique (`name`, `cat`, `badge`) et son équivalent anglais
-  (`name_en`, `cat_en`, `badge_en`). Les libellés de catégories sont dans
-  `CAT_LABELS` / `SVC_CAT_LABELS` de `js/i18n.js`.
+  champ espagnol canonique (`name`, `cat`, `badge`) et ses équivalents anglais/français/portugais
+  (`name_en`/`name_fr`/`name_pt`, `cat_en`/`cat_fr`/`cat_pt`, `badge_en`/`badge_fr`/`badge_pt`). Les libellés de
+  catégories sont dans `CAT_LABELS` / `SVC_CAT_LABELS` de `js/i18n.js`.
+- **Services** : chaque entrée de `SERVICES` (js/data.js) porte `tag`/`tag_en`/`tag_fr`/`tag_pt`
+  (libellé de carte), `level` (principiante/intermedio/avanzado), `min` (personnes),
+  `bestseller` (badge ★) et `desc`/`desc_en`/`desc_fr`/`desc_pt` (texte du bouton « Más info »).
+- **Novedades** : le tableau `POSTS` (js/data.js) liste les actualités ; `dateSort`
+  (AAAA-MM) définit le tri, les 4 plus récentes s'affichent sur l'accueil.
 - Dans le HTML, un élément traduisible porte `data-i18n="clé"` (texte simple),
   `data-i18n-html="clé"` (contient du HTML comme `<em>`/`<strong>`),
   `data-i18n-aria="clé"` ou `data-i18n-alt="clé"`.
@@ -83,6 +90,6 @@ Conventions :
 ## Personnalisation rapide
 
 - Couleurs / typographie : `:root` dans `css/style.css`.
-- Textes bilingues : `js/i18n.js` (voir ci-dessus).
+- Textes quadrilingues : `js/i18n.js` (voir ci-dessus).
 - Produits et services : `js/data.js`.
 - Coordonnées (email, téléphone, WhatsApp) : `js/main.js` (constante `SITE`).

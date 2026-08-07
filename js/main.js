@@ -19,6 +19,7 @@
 
   /* ---------- i18n ---------- */
   var DEFAULT_LANG = "es";
+  var LANGS = ["es", "en", "fr", "pt"];
   var LANG_KEY = "santuario_lang";
   var PAGE_KEYS = {
     "index.html": "home",
@@ -34,13 +35,14 @@
   };
 
   function getLang() {
-    var m = (window.location.search.match(/[?&]lang=(es|en)/) || [])[1];
+    var m = (window.location.search.match(/[?&]lang=(es|en|fr|pt)/) || [])[1];
     if (m) { saveLang(m); return m; }
     var s = localStorage.getItem(LANG_KEY);
-    return s === "en" ? "en" : DEFAULT_LANG;
+    return LANGS.indexOf(s) !== -1 ? s : DEFAULT_LANG;
   }
   function saveLang(l) { try { localStorage.setItem(LANG_KEY, l); } catch (e) {} }
   function setLang(l) {
+    if (LANGS.indexOf(l) === -1) l = DEFAULT_LANG;
     saveLang(l);
     // Retire ?lang= de l'URL pour que le choix manuel ne soit pas écrasé
     if (window.location.search.indexOf("lang=") !== -1) {
@@ -95,9 +97,17 @@
 
     var lt = document.getElementById("langToggle");
     if (lt) {
-      lt.textContent = (lang === "es" ? "en" : "es").toUpperCase();
+      var cur = document.getElementById("langCurrent");
+      if (cur) cur.textContent = lang.toUpperCase();
       lt.setAttribute("aria-label", t("ui.langAria"));
       lt.setAttribute("title", t("ui.langAria"));
+    }
+    var langMenu = document.getElementById("langMenu");
+    if (langMenu) {
+      langMenu.querySelectorAll("[data-lang]").forEach(function (b) {
+        b.classList.toggle("is-active", b.getAttribute("data-lang") === lang);
+        b.setAttribute("aria-pressed", b.getAttribute("data-lang") === lang ? "true" : "false");
+      });
     }
   }
 
@@ -150,7 +160,17 @@
           navHTML() +
           '<div class="header-cta">' +
             '<a class="btn btn--outline btn--sm" href="reserva.html" data-i18n="ui.reserve">' + t("ui.reserve") + "</a>" +
-            '<button class="lang-toggle" id="langToggle" type="button" aria-label="' + t("ui.langAria") + '" title="' + t("ui.langAria") + '">EN</button>' +
+            '<div class="lang-select" id="langSelect">' +
+              '<button class="lang-select__btn" id="langToggle" type="button" aria-haspopup="true" aria-expanded="false" aria-label="' + t("ui.langAria") + '" title="' + t("ui.langAria") + '">' +
+                '<span id="langCurrent">' + getLang().toUpperCase() + '</span><span class="caret" aria-hidden="true">▼</span>' +
+              "</button>" +
+              '<div class="lang-select__menu" id="langMenu" role="menu">' +
+                '<button type="button" role="menuitemradio" data-lang="es">Español <small>ES</small></button>' +
+                '<button type="button" role="menuitemradio" data-lang="en">English <small>EN</small></button>' +
+                '<button type="button" role="menuitemradio" data-lang="fr">Français <small>FR</small></button>' +
+                '<button type="button" role="menuitemradio" data-lang="pt">Português <small>PT</small></button>' +
+              "</div>" +
+            "</div>" +
             '<button class="cart-btn" id="cartBtn" type="button" aria-label="' + t("ui.cartAria") + '" data-i18n-aria="ui.cartAria" style="display:none">' +
               '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="21" r="1.6"/><circle cx="19" cy="21" r="1.6"/><path d="M2 3h2.5l2.2 12.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L22 7H5.2"/></svg>' +
               '<span class="cart-count" id="cartCount" hidden>0</span>' +
@@ -275,17 +295,43 @@
     initCart();
     initLightbox();
     initClickableCards();
-    initStaticServices();
+    initMoreInfo();
+    renderServiceGrids();
+    renderPosts();
   });
 
   /* ---------- Langue ---------- */
   function initLang() {
     var toggle = document.getElementById("langToggle");
+    var select = document.getElementById("langSelect");
     if (toggle) {
-      toggle.addEventListener("click", function () {
-        setLang(getLang() === "es" ? "en" : "es");
+      toggle.addEventListener("click", function (e) {
+        e.stopPropagation();
+        var open = select.classList.toggle("open");
+        toggle.setAttribute("aria-expanded", open ? "true" : "false");
       });
     }
+    document.addEventListener("click", function (e) {
+      if (select && !select.contains(e.target)) {
+        select.classList.remove("open");
+        if (toggle) toggle.setAttribute("aria-expanded", "false");
+      }
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && select) {
+        select.classList.remove("open");
+        if (toggle) toggle.setAttribute("aria-expanded", "false");
+      }
+    });
+    document.querySelectorAll("[data-lang]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        setLang(b.getAttribute("data-lang"));
+        if (select) {
+          select.classList.remove("open");
+          if (toggle) toggle.setAttribute("aria-expanded", "false");
+        }
+      });
+    });
     applyTranslations();
     refreshDynamic();
   }
@@ -302,33 +348,82 @@
     var waSocial = document.querySelector(".wa-social");
     if (waSocial) waSocial.setAttribute("href", waUrl("expeditions"));
     if (_cartRefresh) _cartRefresh();
-    initStaticServices();
+    renderServiceGrids();
+    renderPosts();
   }
 
-  /* ---------- Cartes « Expediciones » : prix + WhatsApp depuis data.js ---------- */
-  // Chaque carte statique porte data-svc=<id> (défini dans js/data.js).
-  // Une seule source de vérité pour le prix et le message de réservation.
-  function initStaticServices() {
-    document.querySelectorAll("[data-svc]").forEach(function (card) {
-      var svc = SERVICES.find(function (s) { return s.id === card.getAttribute("data-svc"); });
-      if (!svc) return;
+  /* ---------- Cartes « Expediciones » : rendu unifié depuis data.js ---------- */
+  // Les pages expéditions contiennent un conteneur #svcList avec
+  // `data-cat="Kayak|Trekking|Ruta etnocultural"` ou `data-ids="a,b,c"`.
+  // Toutes les infos (prix, niveau, min., badge, description, WhatsApp)
+  // viennent de js/data.js → une seule source de vérité.
+  function minPaxLabel(n) {
+    return n === 1 ? t("ui.minPaxOne") : t("ui.minPax").replace("{n}", n);
+  }
 
-      var price = fmtCLPshort(svc.price);
-      var priceEl = card.querySelector(".svc-card__price");
-      if (priceEl) {
-        var small = priceEl.querySelector("small");
-        priceEl.innerHTML = "";
-        priceEl.appendChild(document.createTextNode(price + " "));
-        if (small) priceEl.appendChild(small);
-      }
+  function svcLevelLabel(level) {
+    if (level === "principiante") return t("ui.levelPrincipiante");
+    if (level === "intermedio") return t("ui.levelIntermedio");
+    if (level === "avanzado") return t("ui.levelAvanzado");
+    return "";
+  }
 
-      var name = getLang() === "en" ? (svc.name_en || svc.name) : svc.name;
-      var msg = encodeURIComponent(t("ui.waReserve") + ": " + name + " (" + svc.dur + ") — " + price);
-      var href = "https://wa.me/" + SITE.wa + "?text=" + msg;
-      var link = card.querySelector(".svc-card__link");
-      if (link) link.href = href;
-      var btn = card.querySelector(".btn--primary");
-      if (btn) btn.href = href;
+  function svcCardHTML(s) {
+    var lang = getLang();
+    var name = s["name_" + lang] || s.name;
+    var tag = s["tag_" + lang] || s.tag || s["cat_" + lang] || s.cat;
+    var desc = s["desc_" + lang] || s.desc || "";
+    var badge = s.bestseller ? '<span class="svc-card__badge">★ ' + pick(BADGE_LABELS["Más vendido"]) + "</span>" : "";
+    var price = fmtCLP(s.price);
+    var msg = encodeURIComponent(t("ui.waReserve") + ": " + name + " (" + s.dur + ") — " + price);
+    var wa = "https://wa.me/" + SITE.wa + "?text=" + msg;
+    var more = desc
+      ? '<button class="svc-card__more-btn" type="button" aria-expanded="false" aria-label="' + t("ui.moreInfoAria") + '"><span class="svc-card__more-ico" aria-hidden="true">+</span> <span data-i18n="ui.moreInfo">' + t("ui.moreInfo") + "</span></button>" +
+        '<div class="svc-card__more" hidden><p>' + desc + "</p></div>"
+      : "";
+    return (
+      '<article class="svc-card">' +
+        '<a class="svc-card__link" target="_blank" rel="noopener" href="' + wa + '" aria-label="' + name + ' — ' + t("ui.waAria") + '">' +
+          '<div class="svc-card__img">' + badge + '<img src="' + s.img + '" alt="' + name + '" loading="lazy"></div>' +
+        "</a>" +
+        '<div class="svc-card__body">' +
+          '<span class="svc-card__cat">' + tag + "</span>" +
+          "<h3>" + name + "</h3>" +
+          '<div class="svc-card__meta">' +
+            '<span class="svc-card__tag">⏱ ' + s.dur + "</span>" +
+            '<span class="svc-card__tag svc-card__tag--level">' + svcLevelLabel(s.level) + "</span>" +
+            '<span class="svc-card__tag">' + minPaxLabel(s.min) + "</span>" +
+          "</div>" +
+          '<p class="svc-card__price">' + price + ' <small data-i18n="ui.perPerson">' + t("ui.perPerson") + "</small></p>" +
+          more +
+          '<a class="btn btn--primary" target="_blank" rel="noopener" href="' + wa + '">' + WA_ICON + t("ui.bookNow") + "</a>" +
+        "</div>" +
+      "</article>"
+    );
+  }
+
+  function renderServiceGrids() {
+    document.querySelectorAll("#svcList").forEach(function (grid) {
+      var cat = grid.getAttribute("data-cat");
+      var ids = (grid.getAttribute("data-ids") || "").split(",").map(function (x) { return x.trim(); }).filter(Boolean);
+      var items;
+      if (cat) items = SERVICES.filter(function (s) { return s.cat === cat; });
+      else items = ids.map(function (id) { return SERVICES.find(function (s) { return s.id === id; }); }).filter(Boolean);
+      grid.innerHTML = items.map(svcCardHTML).join("");
+    });
+  }
+
+  // « Más info » dépliable sur chaque carte
+  function initMoreInfo() {
+    document.addEventListener("click", function (ev) {
+      var btn = ev.target.closest(".svc-card__more-btn");
+      if (!btn) return;
+      var panel = btn.nextElementSibling;
+      var open = panel && !panel.hidden;
+      if (panel) panel.hidden = open;
+      btn.setAttribute("aria-expanded", open ? "false" : "true");
+      btn.classList.toggle("open", !open);
+      btn.querySelector(".svc-card__more-ico").textContent = open ? "+" : "−";
     });
   }
 
@@ -341,6 +436,28 @@
     var best = PRODUCTS.filter(function (p) { return p.badge === "Más vendido"; });
     var rest = PRODUCTS.filter(function (p) { return p.badge !== "Más vendido"; });
     grid.innerHTML = best.concat(rest).slice(0, 4).map(productCardHTML).join("");
+  }
+
+  /* ---------- Accueil : novedades (posts) ---------- */
+  // Affiche les 4 derniers posts (tri par dateSort), chacun avec photo.
+  function renderPosts() {
+    var grid = document.getElementById("postGrid");
+    if (!grid || typeof POSTS === "undefined") return;
+    var lang = getLang();
+    var posts = POSTS.slice().sort(function (a, b) {
+      return (b.dateSort || "").localeCompare(a.dateSort || "");
+    }).slice(0, 4);
+    grid.innerHTML = posts.map(function (p) {
+      var title = pick(p.title), body = pick(p.body), date = pick(p.date);
+      return (
+        '<article class="post-card">' +
+          '<div class="post-card__img"><img src="' + p.img + '" alt="' + title + '" loading="lazy"></div>' +
+          '<p class="post-card__date">' + date + "</p>" +
+          "<h3>" + title + "</h3>" +
+          "<p>" + body + "</p>" +
+        "</article>"
+      );
+    }).join("");
   }
 
   /* ---------- Lightbox produits ---------- */
@@ -522,10 +639,11 @@
     return pick(BADGE_LABELS[b]) || b;
   }
   function productName(p) {
-    return getLang() === "en" ? (p.name_en || p.name) : p.name;
+    return p["name_" + getLang()] || p.name;
   }
   function productCat(p) {
-    return getLang() === "en" ? (p.cat_en || p.cat) : p.cat;
+    var label = CAT_LABELS[p.cat];
+    return label ? pick(label) : (p["cat_" + getLang()] || p.cat);
   }
 
   function productCardHTML(p) {
@@ -604,26 +722,7 @@
       var items = cat && cat !== "Todos los servicios"
         ? SERVICES.filter(function (s) { return s.cat === cat; })
         : SERVICES;
-      listEl.innerHTML = items.map(function (s) {
-        var name = getLang() === "en" ? (s.name_en || s.name) : s.name;
-        var catLabel = getLang() === "en" ? (s.cat_en || s.cat) : s.cat;
-        var msg = encodeURIComponent(t("ui.waReserve") + ": " + name + " (" + s.dur + ") — " + fmtCLPshort(s.price));
-        var wa = "https://wa.me/" + SITE.wa + "?text=" + msg;
-        return (
-          '<article class="svc-card">' +
-            '<a class="svc-card__link" target="_blank" rel="noopener" href="' + wa + '" aria-label="' + name + ' — ' + t("ui.waAria") + '">' +
-              '<div class="svc-card__img"><img src="' + s.img + '" alt="' + name + '" loading="lazy"></div>' +
-            "</a>" +
-            '<div class="svc-card__body">' +
-              '<span class="svc-card__cat">' + catLabel + "</span>" +
-              "<h3>" + name + "</h3>" +
-              '<div class="svc-card__meta"><span class="svc-card__tag">⏱ ' + s.dur + "</span></div>" +
-              '<p class="svc-card__price">' + fmtCLP(s.price) + ' <small data-i18n="ui.perPerson">por persona</small></p>' +
-              '<a class="btn btn--primary" target="_blank" rel="noopener" href="' + wa + '">' + WA_ICON + t("ui.bookNow") + "</a>" +
-            "</div>" +
-          "</article>"
-        );
-      }).join("");
+      listEl.innerHTML = items.map(svcCardHTML).join("");
     }
 
     renderChips();
