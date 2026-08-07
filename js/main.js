@@ -449,9 +449,10 @@
     }).slice(0, 4);
     grid.innerHTML = posts.map(function (p) {
       var title = pick(p.title), body = pick(p.body), date = pick(p.date);
+      var alt = p.imgAlt ? pick(p.imgAlt) : title;
       return (
         '<article class="post-card">' +
-          '<div class="post-card__img"><img src="' + p.img + '" alt="' + title + '" loading="lazy"></div>' +
+          '<div class="post-card__img"><img src="' + p.img + '" alt="' + alt + '" loading="lazy" width="1000"></div>' +
           '<p class="post-card__date">' + date + "</p>" +
           "<h3>" + title + "</h3>" +
           "<p>" + body + "</p>" +

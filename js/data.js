@@ -324,7 +324,8 @@ const SERVICE_CATEGORIES = ["Todos los servicios", "Trekking", "Kayak", "Ruta et
 const POSTS = [
   {
     id: "patagon-journal",
-    img: "assets/img/news-patagon.svg",
+    img: "assets/img/patagon-journal-web.webp",
+    imgAlt: { es: "Portada de la revista Patagon Journal a la venta en Santuario Expediciones", en: "Cover of the Patagon Journal magazine on sale at Santuario Expediciones", fr: "Couverture du magazine Patagon Journal en vente chez Santuario Expediciones", pt: "Capa da revista Patagon Journal à venda na Santuario Expediciones" },
     dateSort: "2026-08",
     date: { es: "Agosto 2026", en: "August 2026", fr: "Août 2026", pt: "Agosto 2026" },
     title: { es: "¡Estamos en Patagon Journal!", en: "We're in Patagon Journal!", fr: "Nous sommes dans Patagon Journal !", pt: "Estamos no Patagon Journal!" },
@@ -332,7 +333,8 @@ const POSTS = [
   },
   {
     id: "hongos",
-    img: "assets/img/news-hongos.svg",
+    img: "assets/img/hongos-bosque-esclerofilo.webp",
+    imgAlt: { es: "Hongos del bosque esclerófilo en Pichilemu", en: "Mushrooms of the sclerophyll forest in Pichilemu", fr: "Champignons de la forêt sclérophylle à Pichilemu", pt: "Cogumelos da mata esclerófila em Pichilemu" },
     dateSort: "2026-07",
     date: { es: "Julio 2026", en: "July 2026", fr: "Juillet 2026", pt: "Julho 2026" },
     title: { es: "Llegaron los hongos", en: "The mushrooms are here", fr: "Les champignons sont arrivés", pt: "Os cogumelos chegaram" },
