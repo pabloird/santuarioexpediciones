@@ -26,12 +26,15 @@
   <div id="headerSlot"></div>
 
   <main id="main">
-    <!-- ============ HERO — full-bleed crossfade + caption ============ -->
+    <!-- ============ HERO — full-bleed video + caption ============ -->
     <section class="s1-hero" aria-label="Santuario Expediciones">
-      <div class="s1-hero__slide" style="background-image:url('assets/img/gallery-2.webp')"></div>
-      <div class="s1-hero__slide" style="background-image:url('assets/img/kayak-aves.webp')"></div>
-      <div class="s1-hero__slide" style="background-image:url('assets/img/camping.webp')"></div>
-      <div class="s1-hero__slide" style="background-image:url('assets/img/gallery-1.webp')"></div>
+      <div class="s1-hero__media">
+        <video autoplay muted loop playsinline poster="assets/img/hero-poster-2.webp">
+          <source src="assets/video/hero-2.webm" type="video/webm" media="(max-width: 991px)">
+          <source src="assets/video/hero-2-lite.mp4" type="video/mp4" media="(max-width: 991px)">
+          <source src="assets/video/hero-2.mp4" type="video/mp4" media="(min-width: 992px)">
+        </video>
+      </div>
       <div class="s1-hero__scrim"></div>
       <div class="s1-hero__caption">
         <span class="s1-hero__eyebrow reveal" data-i18n="home.heroEyebrow">Expediciones de naturaleza · Pichilemu</span>
@@ -110,7 +113,7 @@
 
       <div class="container">
         <div class="exp-featured reveal">
-          <div class="exp-featured__media"><img src="assets/img/camping.webp" alt="Expedición 2 días — Glamping" loading="lazy"></div>
+          <div class="exp-featured__media"><img src="assets/img/expedicion2dias-kayak-glamping-en-el-humedal-yt-thumbnail-1280-720.webp" alt="Expedición 2 días — Glamping" loading="lazy"></div>
           <div class="exp-featured__body">
             <span class="exp-card__eyebrow" data-i18n="home.c5.eyebrow">Expedición · 2 días</span>
             <h3 data-i18n="home.c5.title">Expedición 2 días — Kayak + Glamping en el humedal</h3>
