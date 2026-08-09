@@ -15,7 +15,7 @@
   --accent: #1a1a1a;
   --green: #000000;
   --green-bright: #000000;
-  --font-display: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: "Anton", "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-body: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --container: 1400px;
   --section-pad: clamp(72px, 9vw, 96px);
@@ -35,7 +35,7 @@ body {
 p { line-height: 1.6; }
 
 /* Typography — inverted hierarchy: light big display, neutral labels */
-.display { font-family: var(--font-display); font-weight: 400; letter-spacing: -0.03em; line-height: 1.05; }
+.display { font-family: var(--font-display); font-weight: 400; letter-spacing: 0.01em; line-height: 1.14; }
 .eyebrow {
   font-size: 13px;
   font-weight: 400;
@@ -51,8 +51,8 @@ p { line-height: 1.6; }
 .section__head h2, .section__head h1 {
   font-size: clamp(40px, 5.4vw, 78px);
   font-weight: 400;
-  letter-spacing: -0.03em;
-  line-height: 1.02;
+  letter-spacing: 0.01em;
+  line-height: 1.12;
   margin-bottom: 22px;
 }
 .section__head p { color: var(--ink-soft); font-size: 18px; max-width: 660px; }
@@ -164,13 +164,13 @@ p { line-height: 1.6; }
   font-family: var(--font-display);
   font-weight: 400;
   font-size: clamp(44px, 7vw, 92px);
-  line-height: 0.98;
-  letter-spacing: -0.035em;
+  line-height: 1.14;
+  letter-spacing: 0.01em;
   color: #fff;
   margin-bottom: 18px;
   text-shadow: 0 2px 30px rgba(0,0,0,0.25);
 }
-.s1-hero h1 em { font-style: italic; }
+.s1-hero h1 em { font-style: normal; }
 .s1-hero__sub {
   font-size: 19px;
   font-weight: 400;
@@ -249,8 +249,8 @@ p { line-height: 1.6; }
 .exp-card h3 {
   font-family: var(--font-display);
   font-size: 24px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
+  font-weight: 400;
+  letter-spacing: 0.01em;
   line-height: 1.12;
   margin-bottom: 10px;
 }
@@ -313,7 +313,7 @@ p { line-height: 1.6; }
   box-shadow: none;
 }
 .product-card__cat { font-size: 13px; font-weight: 400; letter-spacing: 0.02em; text-transform: none; color: var(--gray); margin-bottom: 6px; }
-.product-card h3 { font-family: var(--font-display); font-size: 20px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.15; margin-bottom: 6px; }
+.product-card h3 { font-family: var(--font-display); font-size: 20px; font-weight: 500; letter-spacing: 0.01em; line-height: 1.15; margin-bottom: 6px; }
 .product-card__price { font-size: 16px; font-weight: 600; margin-bottom: 14px; }
 .product-card__btn {
   margin-top: auto;
@@ -350,14 +350,14 @@ p { line-height: 1.6; }
   background: var(--paper-soft);
 }
 .post-card__date { font-size: 13px; font-weight: 400; letter-spacing: 0.04em; text-transform: none; color: var(--gray); margin-bottom: 10px; }
-.post-card h3 { font-family: var(--font-display); font-size: 30px; font-weight: 500; letter-spacing: -0.015em; line-height: 1.08; margin-bottom: 12px; }
+.post-card h3 { font-family: var(--font-display); font-size: 30px; font-weight: 500; letter-spacing: 0.01em; line-height: 1.14; margin-bottom: 12px; }
 .post-card p { color: var(--ink-soft); font-size: 16px; }
 
 /* ---------- Team — flat text rows ---------- */
 .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; }
 .team-card { text-align: left; }
 .team-card__img { border-radius: 0; aspect-ratio: 3 / 4; margin-bottom: 20px; }
-.team-card h3 { font-family: var(--font-display); font-size: 26px; font-weight: 500; letter-spacing: -0.01em; margin-bottom: 4px; }
+.team-card h3 { font-family: var(--font-display); font-size: 26px; font-weight: 500; letter-spacing: 0.01em; margin-bottom: 4px; }
 #main .team-card p { font-size: 14px; color: var(--gray); }
 
 /* ---------- Reviews — hairlines, no boxes ---------- */
@@ -375,7 +375,7 @@ p { line-height: 1.6; }
 .rev-platform:hover { transform: none; box-shadow: none; border-color: transparent; background: none; }
 .rev-platform__name { font-size: 13px; font-weight: 400; letter-spacing: 0.02em; text-transform: none; color: var(--gray); }
 .rev-platform__score { display: flex; align-items: baseline; gap: 12px; margin: 8px 0; }
-.rev-platform__score strong { font-family: var(--font-display); font-size: 64px; font-weight: 400; letter-spacing: -0.03em; line-height: 1; }
+.rev-platform__score strong { font-family: var(--font-display); font-size: 64px; font-weight: 400; letter-spacing: 0.01em; line-height: 1; }
 .rev-platform__score .rev-stars { color: var(--ink); font-size: 14px; letter-spacing: 2px; }
 .rev-platform__count { font-size: 14px; color: var(--ink-soft); }
 .rev-platform__see { font-size: 13px; font-weight: 500; letter-spacing: 0.03em; text-transform: none; color: var(--ink); border-bottom: 1px solid var(--ink); padding-bottom: 2px; }
@@ -425,8 +425,8 @@ p { line-height: 1.6; }
   font-family: var(--font-display);
   font-size: clamp(44px, 6vw, 88px);
   font-weight: 400;
-  letter-spacing: -0.035em;
-  line-height: 1;
+  letter-spacing: 0.01em;
+  line-height: 1.12;
   margin-bottom: 22px;
 }
 .cta-band p { max-width: 620px; margin: 0 0 36px; color: rgba(255,255,255,0.7); font-size: 18px; }
@@ -470,13 +470,13 @@ p { line-height: 1.6; }
   font-family: var(--font-display);
   font-weight: 400;
   font-size: clamp(44px, 7vw, 92px);
-  line-height: 0.98;
-  letter-spacing: -0.035em;
+  line-height: 1.14;
+  letter-spacing: 0.01em;
   color: #fff;
   text-shadow: 0 2px 30px rgba(0,0,0,0.25);
   margin-bottom: 18px;
 }
-.hero h1 em { font-style: italic; }
+.hero h1 em { font-style: normal; }
 .hero__sub {
   font-family: var(--font-display);
   font-size: 19px;
@@ -520,8 +520,8 @@ p { line-height: 1.6; }
   font-family: var(--font-display);
   font-size: clamp(40px, 6vw, 84px);
   font-weight: 400;
-  letter-spacing: -0.035em;
-  line-height: 0.98;
+  letter-spacing: 0.01em;
+  line-height: 1.12;
   color: #fff;
 }
 
@@ -555,7 +555,7 @@ p { line-height: 1.6; }
 }
 .svc-card__body { padding: 0; display: flex; flex-direction: column; flex: 1; }
 .svc-card__cat { font-size: 13px; font-weight: 400; letter-spacing: 0.02em; text-transform: none; color: var(--gray); margin-bottom: 8px; }
-.svc-card h3 { font-family: var(--font-display); font-size: 26px; font-weight: 500; letter-spacing: -0.015em; line-height: 1.1; margin-bottom: 14px; }
+.svc-card h3 { font-family: var(--font-display); font-size: 26px; font-weight: 500; letter-spacing: 0.01em; line-height: 1.1; margin-bottom: 14px; }
 .svc-card__meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
 .svc-card__tag {
   font-size: 12px;
@@ -635,7 +635,7 @@ p { line-height: 1.6; }
   color: var(--ink);
   margin-bottom: 12px;
 }
-.contact-card h3 { font-family: var(--font-display); font-size: 26px; font-weight: 500; letter-spacing: -0.015em; line-height: 1.1; }
+.contact-card h3 { font-family: var(--font-display); font-size: 26px; font-weight: 500; letter-spacing: 0.01em; line-height: 1.1; }
 .contact-card p { color: var(--ink-soft); font-size: 16px; }
 .contact-card--hours { text-decoration: none; }
 .hours-list li {
@@ -668,7 +668,7 @@ p { line-height: 1.6; }
 
 /* ---------- Accordion ---------- */
 .accordion details { border-bottom: 1px solid var(--paper-soft); }
-.accordion summary { gap: 22px; padding: 24px 4px; font-family: var(--font-display); font-size: 24px; font-weight: 500; letter-spacing: -0.01em; }
+.accordion summary { gap: 22px; padding: 24px 4px; font-family: var(--font-display); font-size: 24px; font-weight: 500; letter-spacing: 0.01em; }
 .accordion summary .num { font-family: var(--font-body); font-size: 13px; font-weight: 400; color: var(--gray); letter-spacing: 0.02em; }
 .accordion summary .mark { color: var(--ink); font-size: 22px; font-weight: 400; }
 .accordion__body { color: var(--ink-soft); }
