@@ -11,3 +11,7 @@
 *.log
 .env
 .env.*
+
+# s1lex design analysis (kept local, not in repo)
+s1lex.com.md
+s1lex.com.json

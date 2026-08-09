@@ -158,6 +158,9 @@ const I18N = {
   "home.gal1Alt": { es: "Aves en el humedal de Cáhuil", en: "Birds in the Cáhuil wetland", fr: "Oiseaux dans le marais de Cáhuil", pt: "Aves no pântano de Cáhuil" },
   "home.gal2Alt": { es: "Kayak de travesía en aguas tranquilas", en: "Sea kayak on calm waters", fr: "Kayak de mer sur eaux calmes", pt: "Caiaque de travessia em águas calmas" },
   "home.gal3Alt": { es: "Paisaje del humedal", en: "Wetland landscape", fr: "Paysage du marais", pt: "Paisagem do pântano" },
+  "home.gal1Caption": { es: "Aves en el humedal de Cáhuil", en: "Birds in the Cáhuil wetland", fr: "Oiseaux dans le marais de Cáhuil", pt: "Aves no pântano de Cáhuil" },
+  "home.gal2Caption": { es: "Kayak de travesía en aguas tranquilas", en: "Sea kayak on calm waters", fr: "Kayak de mer sur eaux calmes", pt: "Caiaque de travessia em águas calmas" },
+  "home.gal3Caption": { es: "Paisaje del humedal", en: "Wetland landscape", fr: "Paysage du marais", pt: "Paisagem do pântano" },
 
   "home.newsEyebrow": { es: "Novedades", en: "News", fr: "Actualités", pt: "Novidades" },
   "home.newsTitle": { es: "Entérate de todo", en: "Stay informed", fr: "Restez informés", pt: "Fique por dentro" },

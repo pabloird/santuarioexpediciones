@@ -18,36 +18,35 @@
   <link rel="icon" type="image/png" href="assets/img/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/s1lex.css">
 </head>
 <body>
   <div id="headerSlot"></div>
 
   <main id="main">
-    <!-- ============ HERO ============ -->
-    <section class="hero">
-      <div class="hero__media">
-        <video autoplay muted loop playsinline poster="assets/img/hero-poster-2.webp">
-          <source src="assets/video/hero-2.webm" type="video/webm">
-          <source src="assets/video/hero-2-lite.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="hero__overlay"></div>
-      <div class="hero__content">
-        <p class="hero__eyebrow reveal" data-i18n="home.heroEyebrow">Expediciones de naturaleza · Pichilemu</p>
+    <!-- ============ HERO — full-bleed crossfade + caption ============ -->
+    <section class="s1-hero" aria-label="Santuario Expediciones">
+      <div class="s1-hero__slide" style="background-image:url('assets/img/gallery-2.webp')"></div>
+      <div class="s1-hero__slide" style="background-image:url('assets/img/kayak-aves.webp')"></div>
+      <div class="s1-hero__slide" style="background-image:url('assets/img/camping.webp')"></div>
+      <div class="s1-hero__slide" style="background-image:url('assets/img/gallery-1.webp')"></div>
+      <div class="s1-hero__scrim"></div>
+      <div class="s1-hero__caption">
+        <span class="s1-hero__eyebrow reveal" data-i18n="home.heroEyebrow">Expediciones de naturaleza · Pichilemu</span>
         <h1 class="reveal" data-delay="1" data-i18n-html="home.heroTitle">Bienvenido a <em>Santuario</em> Expediciones</h1>
-        <p class="hero__sub reveal" data-delay="2" data-i18n="home.heroSub">Explorando en silencio el humedal de las aves</p>
-        <div class="hero__actions reveal" data-delay="3">
+        <p class="s1-hero__sub reveal" data-delay="2" data-i18n="home.heroSub">Explorando en silencio el humedal de las aves</p>
+        <div class="s1-hero__actions reveal" data-delay="3">
           <a class="btn btn--primary" href="#expediciones" data-i18n="home.heroCta1">Explora las expediciones</a>
           <a class="btn btn--outline" href="reserva.html" data-i18n="home.heroCta2">Reserva online</a>
         </div>
       </div>
-      <div class="hero__scroll" data-i18n="home.scroll">Scroll</div>
+      <span class="s1-hero__scroll" data-i18n="home.scroll">Scroll</span>
     </section>
 
-    <!-- ============ EXPEDICIONES ============ -->
-    <section class="section section--paper-soft" id="expediciones">
+    <!-- ============ EXPEDICIONES — portrait tiles, flat ============ -->
+    <section class="section" id="expediciones">
       <div class="container">
         <div class="section__head reveal">
           <span class="eyebrow" data-i18n="home.expEyebrow">Expediciones</span>
@@ -93,7 +92,7 @@
           </article>
           <article class="exp-card reveal" data-delay="3">
             <a class="exp-card__media" href="rutas-etnoculturales.html" aria-label="Rutas etnoculturales" data-i18n-aria="home.c4.aria">
-              <img src="assets/img/etno-greda.svg" alt="Ruta etnocultural con la comunidad" data-i18n-alt="home.c4.imgAlt" loading="lazy">
+              <img src="assets/img/rutas.webp" alt="Ruta etnocultural con la comunidad" data-i18n-alt="home.c4.imgAlt" loading="lazy">
               <span class="exp-card__tag" data-i18n="home.c4.tag">⏱ 3 h · 8 h</span>
             </a>
             <div class="exp-card__body">
@@ -109,13 +108,15 @@
         </div>
       </div>
 
-      <div class="container exp-featured reveal" style="margin-top:64px">
-        <div class="exp-featured__media"><img src="assets/img/glamping.svg" alt="Expedición 2 días — Glamping" loading="lazy"></div>
-        <div class="exp-featured__body">
-          <span class="exp-card__eyebrow" data-i18n="home.c5.eyebrow">Expedición · 2 días</span>
-          <h3 data-i18n="home.c5.title">Expedición 2 días — Kayak + Glamping en el humedal</h3>
-          <p data-i18n="home.c5.desc">Una noche bajo las estrellas en glamping junto al humedal. Dos días de naturaleza, aves y silencio, con alojamiento incluido.</p>
-          <a class="btn btn--primary exp-card__cta" href="reserva.html"><span data-i18n="home.c5.cta">Reservar</span> <span class="icon">→</span></a>
+      <div class="container">
+        <div class="exp-featured reveal">
+          <div class="exp-featured__media"><img src="assets/img/camping.webp" alt="Expedición 2 días — Glamping" loading="lazy"></div>
+          <div class="exp-featured__body">
+            <span class="exp-card__eyebrow" data-i18n="home.c5.eyebrow">Expedición · 2 días</span>
+            <h3 data-i18n="home.c5.title">Expedición 2 días — Kayak + Glamping en el humedal</h3>
+            <p data-i18n="home.c5.desc">Una noche bajo las estrellas en glamping junto al humedal. Dos días de naturaleza, aves y silencio, con alojamiento incluido.</p>
+            <a class="btn btn--primary exp-card__cta" href="reserva.html"><span data-i18n="home.c5.cta">Reservar</span> <span class="icon">→</span></a>
+          </div>
         </div>
       </div>
     </section>
@@ -129,13 +130,13 @@
           <p data-i18n="home.shopIntro">En nuestra agencia/tienda y tienda online encontrarás productos artesanales, equipo outdoor de las marcas Opinel, Stanley, Campante, entre otras, además de libros, guías de identificación de especies y mucho más.</p>
         </div>
         <div class="product-grid" id="homeProducts"></div>
-        <div style="text-align:center;margin-top:56px" class="reveal">
+        <div style="text-align:left;margin-top:64px" class="reveal">
           <a class="btn btn--accent" href="tienda.html"><span data-i18n="home.shopCta">Ver todos los productos</span> <span class="icon">→</span></a>
         </div>
       </div>
     </section>
 
-    <!-- ============ GALERÍA ============ -->
+    <!-- ============ GALERÍA — flat triptych ============ -->
     <section class="section">
       <div class="container">
         <div class="section__head reveal">
@@ -144,9 +145,9 @@
           <p data-i18n="home.galSub">Un tercio de las especies de aves de humedal presentes en Chile encuentra aquí su hogar.</p>
         </div>
         <div class="gallery">
-          <figure class="reveal"><img src="assets/img/gallery-1.webp" alt="Aves en el humedal de Cáhuil" data-i18n-alt="home.gal1Alt" loading="lazy"></figure>
-          <figure class="reveal" data-delay="1"><img src="assets/img/gallery-2.webp" alt="Kayak de travesía en aguas tranquilas" data-i18n-alt="home.gal2Alt" loading="lazy"></figure>
-          <figure class="reveal" data-delay="2"><img src="assets/img/gallery-3.webp" alt="Paisaje del humedal" data-i18n-alt="home.gal3Alt" loading="lazy"></figure>
+          <figure class="reveal"><img src="assets/img/gallery-1.webp" alt="Aves en el humedal de Cáhuil" data-i18n-alt="home.gal1Alt" loading="lazy"><figcaption data-i18n="home.gal1Caption">Aves en el humedal de Cáhuil</figcaption></figure>
+          <figure class="reveal" data-delay="1"><img src="assets/img/gallery-2.webp" alt="Kayak de travesía en aguas tranquilas" data-i18n-alt="home.gal2Alt" loading="lazy"><figcaption data-i18n="home.gal2Caption">Kayak de travesía en aguas tranquilas</figcaption></figure>
+          <figure class="reveal" data-delay="2"><img src="assets/img/gallery-3.webp" alt="Paisaje del humedal" data-i18n-alt="home.gal3Alt" loading="lazy"><figcaption data-i18n="home.gal3Caption">Paisaje del humedal</figcaption></figure>
         </div>
       </div>
     </section>
@@ -174,17 +175,17 @@
           <article class="team-card reveal">
             <div class="team-card__img"><img src="assets/img/equipo-pablo.webp" alt="Pablo Rosés Dietz" loading="lazy"></div>
             <h3>Pablo Rosés Dietz</h3>
-            <p style="color:#6b5a5a" data-i18n="team.p1.role">Fundador &amp; guía</p>
+            <p style="color:#767676" data-i18n="team.p1.role">Fundador &amp; guía</p>
           </article>
           <article class="team-card reveal" data-delay="1">
             <div class="team-card__img"><img src="assets/img/equipo-cecilia.svg" alt="Cecilia Arbos" loading="lazy"></div>
             <h3>Cecilia Arbos</h3>
-            <p style="color:#6b5a5a" data-i18n="team.p2.role">Guía &amp; tienda</p>
+            <p style="color:#767676" data-i18n="team.p2.role">Guía &amp; tienda</p>
           </article>
           <article class="team-card reveal" data-delay="2">
             <div class="team-card__img"><img src="assets/img/equipo-daniel.svg" alt="Daniel Virgues" loading="lazy"></div>
             <h3>Daniel Virgues</h3>
-            <p style="color:#6b5a5a" data-i18n="team.p3.role">Camping &amp; expediciones</p>
+            <p style="color:#767676" data-i18n="team.p3.role">Camping &amp; expediciones</p>
           </article>
         </div>
         <div style="display:flex;gap:16px;flex-wrap:wrap" class="reveal">
@@ -206,7 +207,6 @@
         <div class="rev-platforms reveal">
           <a class="rev-platform" href="https://www.tripadvisor.es/Attraction_Review-g858365-d27515275-Reviews-Santuario_Expediciones-Pichilemu_O_Higgins_Region.html" target="_blank" rel="noopener">
             <img class="rev-platform__logo rev-platform__logo--ta" src="assets/img/tripadvisor-lockup.png" alt="Tripadvisor" width="1024" height="156">
-            <span class="rev-platform__name" data-i18n="home.revTaName">Tripadvisor</span>
             <span class="rev-platform__score">
               <span class="rev-stars" aria-hidden="true">★★★★★</span>
               <strong>5,0 / 5</strong>
@@ -216,7 +216,6 @@
           </a>
           <a class="rev-platform" href="https://maps.google.com/?cid=6576551345342451077" target="_blank" rel="noopener">
             <svg class="rev-platform__logo rev-platform__logo--g" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-            <span class="rev-platform__name" data-i18n="home.revGName">Google</span>
             <span class="rev-platform__score">
               <span class="rev-stars" aria-hidden="true">★★★★★</span>
               <strong>4,9 / 5</strong>
@@ -290,13 +289,13 @@
     </section>
 
     <!-- ============ CAMPING ============ -->
-    <section class="section section--paper-soft" id="camping">
+    <section class="section" id="camping">
       <div class="container">
         <div class="section__head reveal">
           <span class="eyebrow" data-i18n="home.stayEyebrow">Alojamiento</span>
           <h2 class="display" data-i18n="home.stayTitle">¿Buscas dónde alojarte en Pichilemu?</h2>
         </div>
-        <div class="exp-featured reveal" style="margin-top:48px">
+        <div class="exp-featured reveal" style="margin-top:0">
           <div class="exp-featured__media"><img src="assets/img/camping.webp" alt="Olas de Chile Ecocamp — camping ecológico en Punta de Lobos" data-i18n-alt="home.stayImgAlt" loading="lazy"></div>
           <div class="exp-featured__body">
             <p data-i18n-html="home.stayText">Te invitamos a conocer nuestro <strong>camping ecológico Olas de Chile Ecocamp</strong>: sitio autosustentable en Alto Punta de Lobos, con energía solar, bosque nativo y pet friendly, a minutos de la playa. Ideal para completar tu estadía junto a la naturaleza.</p>
@@ -311,7 +310,7 @@
       <div class="container">
         <h2 class="reveal" data-i18n="home.ctaTitle">¿Listo para explorar?</h2>
         <p class="reveal" data-delay="1" data-i18n="home.ctaText">Reserva tu expedición online o escríbenos por WhatsApp. Diseñamos cada travesía según tu ritmo y tus intereses.</p>
-        <div class="reveal" data-delay="2" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+        <div class="reveal" data-delay="2" style="display:flex;gap:16px;justify-content:flex-start;flex-wrap:wrap">
           <a class="btn btn--light" href="reserva.html" data-i18n="home.ctaBook">Reserva online</a>
           <a class="btn btn--light" data-wa="expeditions" href="https://wa.me/56994365496?text=Hola%20qu%C3%A9%20tal%2C%20quisieras%20saber%20m%C3%A1s%20de%20nuestras%20expediciones%3F" target="_blank" rel="noopener" data-i18n="home.ctaWa">WhatsApp</a>
         </div>
