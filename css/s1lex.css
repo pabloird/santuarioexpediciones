@@ -6,6 +6,24 @@
    Loaded site-wide (the redesign).
    ============================================================ */
 
+/* ---------- Self-hosted fonts (no flash of fallback) ---------- */
+@font-face {
+  font-family: "Anton";
+  src: url("../assets/fonts/anton-latin.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+  unicode-range: U+0000-00FF;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("../assets/fonts/inter-latin.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: block;
+  unicode-range: U+0000-00FF;
+}
+
 :root {
   --paper: #faf5ec;
   --paper-soft: #f1e9d9;
@@ -134,10 +152,11 @@ p { line-height: 1.6; }
   display: block;
   isolation: isolate;
 }
-.s1-hero__media { position: absolute; inset: 0; z-index: -2; }
+.s1-hero__media { position: absolute; inset: 0; z-index: -2; overflow: hidden; background: #000; }
 .s1-hero__media video, .s1-hero__media img {
   width: 100%; height: 100%;
   object-fit: cover;
+  animation: none;
 }
 .s1-hero__scrim {
   position: absolute; inset: 0;
@@ -221,8 +240,8 @@ p { line-height: 1.6; }
   background: var(--paper-soft);
   margin-bottom: 18px;
 }
-.exp-card__media img { transition: transform 0.9s var(--ease); }
-.exp-card:hover .exp-card__media img { transform: scale(1.04); }
+.exp-card__media img { transition: scale 0.6s var(--ease); scale: 1; }
+.exp-card:hover .exp-card__media img { scale: 1.04; }
 .exp-card__tag {
   position: absolute;
   top: 14px; left: 14px;
@@ -278,8 +297,9 @@ p { line-height: 1.6; }
   aspect-ratio: 21 / 9;
   box-shadow: none;
 }
-.exp-featured__media { position: absolute; inset: 0; }
-.exp-featured__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.85; }
+.exp-featured__media { position: absolute; inset: 0; overflow: hidden; }
+.exp-featured__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.85; scale: 1; transition: scale 1s var(--ease), opacity 0.6s var(--ease); }
+.exp-featured:hover .exp-featured__media img { scale: 1.06; opacity: 0.92; }
 .exp-featured__body {
   position: absolute;
   left: 0; right: 0; bottom: 0;
@@ -329,8 +349,8 @@ p { line-height: 1.6; }
   position: relative; border-radius: 0; overflow: hidden; aspect-ratio: 4 / 5; margin: 0;
   transform: none !important;
 }
-.gallery img { transition: transform 0.9s var(--ease); }
-.gallery figure:hover img { transform: scale(1.04) rotate(0); }
+.gallery img { scale: 1; transition: scale 0.6s var(--ease); }
+.gallery figure:hover img { scale: 1.06; }
 .gallery figcaption {
   position: absolute; left: 0; right: 0; bottom: 0;
   padding: 40px 18px 16px;
@@ -539,8 +559,8 @@ p { line-height: 1.6; }
 }
 .svc-card:hover { transform: none; box-shadow: none; }
 .svc-card__img { aspect-ratio: 3 / 4; margin-bottom: 20px; position: relative; }
-.svc-card__img img { transition: transform 0.9s var(--ease); }
-.svc-card:hover .svc-card__img img { transform: scale(1.04); }
+.svc-card__img img { scale: 1; transition: scale 0.6s var(--ease); }
+.svc-card:hover .svc-card__img img { scale: 1.04; }
 .svc-card__badge {
   top: 14px; left: 14px;
   background: var(--paper);
@@ -716,4 +736,209 @@ p { line-height: 1.6; }
   .contact-grid { grid-template-columns: 1fr; gap: 0; }
   .contact-grid .contact-card + .contact-card { border-left: 0; border-top: 1px solid var(--ink); padding-left: 0; }
   .shop-banner { aspect-ratio: 4 / 3; }
+}
+
+/* ============================================================
+   s1lex micro-interactions (js/s1lex.js)
+   ============================================================ */
+
+/* ---------- Word-by-word headline reveal ---------- */
+#main h1 .w, #main h2.display .w {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+#main h1 .w-in, #main h2.display .w-in {
+  display: inline-block;
+  transform: translateY(115%);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i, 0) * 42ms);
+}
+#main h1.is-in .w-in, #main h2.display.is-in .w-in {
+  transform: translateY(0);
+}
+
+/* ---------- Eyebrow micro-detail: index number + short rule ---------- */
+#main { counter-reset: s1sec; }
+.section { counter-increment: s1sec; }
+.eyebrow--line {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.eyebrow--line::before {
+  content: "0" counter(s1sec);
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: var(--gray);
+  font-variant-numeric: tabular-nums;
+}
+.eyebrow--line::after {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: var(--gray);
+  flex: none;
+  transition: width 0.5s var(--ease);
+}
+.section__head:hover .eyebrow--line::after { width: 44px; }
+
+/* ---------- Soft parallax on imagery ---------- */
+/* Parallax moves translate only (no transition — updated every scroll
+   frame). Hover zoom uses the independent `scale` property with its own
+   transition, so the two never conflict. */
+.exp-card__media img.s1-parallax,
+.svc-card__img img.s1-parallax,
+.post-card__img img.s1-parallax,
+.gallery figure img.s1-parallax,
+.exp-featured__media img.s1-parallax {
+  transform: translate3d(0, var(--py, 0px), 0);
+  scale: 1.08;
+  will-change: transform;
+  transition: scale 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.exp-card:hover .exp-card__media img.s1-parallax,
+.svc-card:hover .svc-card__img img.s1-parallax,
+.post-card:hover .post-card__img img.s1-parallax,
+.gallery figure:hover img.s1-parallax,
+.product-card:hover .product-card__img img.s1-parallax {
+  scale: 1.12;
+}
+
+/* Neutralize legacy style.css hover zooms (they target `transform` and would
+   override the parallax translate3d). Zoom is handled via `scale` below. */
+.exp-card:hover .exp-card__media img,
+.gallery figure:hover img,
+.svc-card:hover .svc-card__img img,
+.post-card:hover .post-card__img img {
+  transform: none;
+}
+.product-card__img img {
+  scale: 1;
+  transition: scale 0.6s var(--ease);
+}
+.product-card:hover .product-card__img img {
+  scale: 1.05;
+  transform: none;
+}
+.exp-card:hover .exp-card__media img.s1-parallax,
+.svc-card:hover .svc-card__img img.s1-parallax,
+.post-card:hover .post-card__img img.s1-parallax,
+.gallery figure:hover img.s1-parallax {
+  transform: translate3d(0, var(--py, 0px), 0);
+}
+
+/* ---------- Scrolling marquee ---------- */
+.s1-marquee {
+  position: relative;
+  overflow: hidden;
+  background: #000;
+  color: #fff;
+  padding: 14px 0;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.s1-marquee__track {
+  display: flex;
+  width: max-content;
+  white-space: nowrap;
+  animation: s1Marquee 32s linear infinite;
+}
+.s1-marquee__word {
+  display: inline-flex;
+  align-items: center;
+  gap: 2.5ch;
+  padding-right: 2.5ch;
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2.4vw, 36px);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.s1-marquee__star {
+  font-size: 0.55em;
+  color: rgba(255,255,255,0.5);
+  animation: s1Spin 6s linear infinite;
+  display: inline-block;
+}
+.s1-marquee--static .s1-marquee__track { animation: none; flex-wrap: wrap; width: auto; }
+@keyframes s1Marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes s1Spin {
+  from { transform: rotate(0); }
+  to { transform: rotate(360deg); }
+}
+
+/* ---------- Expedition cards hover polish ---------- */
+.exp-card__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0);
+  transition: background 0.45s var(--ease);
+  pointer-events: none;
+}
+.exp-card:hover .exp-card__media::after {
+  background: linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(0,0,0,0.28) 100%);
+}
+.exp-card__cta .icon, .exp-card__cta span:last-child {
+  transition: transform 0.35s var(--ease);
+}
+.exp-card:hover .exp-card__cta .icon { transform: translateX(4px); }
+.exp-card__cta:hover .icon { transform: translateX(6px); }
+
+/* ---------- Links underline micro ---------- */
+.text-link, .main-nav a:not(.is-active) {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  transition: background-size 0.4s var(--ease), color var(--dur) var(--ease);
+}
+.text-link:hover, .text-link:focus-visible { background-size: 100% 1px; }
+
+/* ---------- Reduced motion global ---------- */
+@media (prefers-reduced-motion: reduce) {
+  #main h1 .w-in, #main h2.display .w-in { transform: none; transition: none; }
+  .s1-marquee__track { animation: none; }
+  .s1-marquee__star { animation: none; }
+  .exp-card__media img.s1-parallax,
+  .svc-card__img img.s1-parallax,
+  .post-card__img img.s1-parallax,
+  .gallery figure img.s1-parallax,
+  .exp-featured__media img.s1-parallax { transform: none !important; scale: 1 !important; transition: none !important; }
+  .eyebrow--line::before { transition: none; }
+}
+
+/* ---------- Hand cursor on every linkable surface ---------- */
+a, a * { cursor: pointer; }
+a img, a svg { cursor: pointer; }
+button, [role="button"] { cursor: pointer; }
+.svc-card, .exp-card, .rev-platform, .rev-card, .post-card, .team-card,
+.product-card, .contact-card, .exp-featured, .gallery figure {
+  cursor: pointer;
+}
+
+/* ---------- Smooth page transitions (View Transitions API) ---------- */
+@view-transition {
+  navigation: auto;
+}
+::view-transition-old(root) {
+  animation: s1ViewOut 0.28s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+::view-transition-new(root) {
+  animation: s1ViewIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes s1ViewOut {
+  to { opacity: 0; transform: translateY(6px); }
+}
+@keyframes s1ViewIn {
+  from { opacity: 0; transform: translateY(6px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation: none; }
 }
