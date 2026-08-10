@@ -79,15 +79,62 @@ p { line-height: 1.6; }
 .container { width: min(var(--container), 100% - 80px); margin-inline: auto; }
 .container--narrow { width: min(920px, 100% - 80px); margin-inline: auto; }
 
-/* ---------- Header — thin beige bar ---------- */
+/* ---------- Header — floating glass pill over the hero ---------- */
 .site-header {
-  background: rgba(250, 245, 236, 0.92);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--paper-soft);
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  background: transparent;
+  border-bottom: 0;
   box-shadow: none !important;
+  pointer-events: none;
+  /* Kill the legacy full-width glass band from style.css: ONLY the pill blurs */
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  filter: none !important;
 }
-.site-header__inner { height: 68px; }
-.brand img { height: 40px; }
+/* Detached glass pill: hugs its content, floats centered, no full-width band */
+.site-header__inner {
+  box-sizing: border-box;
+  width: fit-content;
+  max-width: calc(100% - 40px);
+  margin: 16px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 60px;
+  padding: 0 16px 0 20px;
+  border-radius: 999px;
+  background: rgba(253, 250, 245, 0.9);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  backdrop-filter: blur(10px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 8px 32px rgba(26, 26, 26, 0.08), inset 0 1px 0 rgba(255,255,255,0.6);
+  transition: background 0.4s var(--ease), box-shadow 0.4s var(--ease), border-color 0.4s var(--ease);
+  pointer-events: auto;
+}
+/* Scrolled: pill only — solid, clearly readable, still just the pill */
+.site-header.scrolled .site-header__inner {
+  background: rgba(255, 255, 255, 0.96);
+  border-color: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 14px 40px rgba(26, 26, 26, 0.14), inset 0 1px 0 rgba(255,255,255,0.6);
+}
+.site-header.scrolled { background: transparent; }
+
+/* Heroes slide up under the pill so it floats over the media */
+.s1-hero, .hero, .shop-banner {
+  margin-top: -80px;
+}
+
+/* Slimmer logo inside the compact pill */
+.brand { position: relative; overflow: visible; display: flex; align-items: center; }
+.brand img { height: 52px; width: auto; display: block; }
+@media (max-width: 560px) {
+  .site-header__inner { margin-top: 10px; height: 56px; padding: 0 10px 0 14px; }
+  .brand img { height: 40px; }
+  .s1-hero, .hero, .shop-banner { margin-top: -66px; }
+}
 .main-nav a, .main-nav button.nav-link {
   padding: 6px 14px;
   font-size: 13px;
@@ -298,8 +345,7 @@ p { line-height: 1.6; }
   box-shadow: none;
 }
 .exp-featured__media { position: absolute; inset: 0; overflow: hidden; }
-.exp-featured__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.85; scale: 1; transition: scale 1s var(--ease), opacity 0.6s var(--ease); }
-.exp-featured:hover .exp-featured__media img { scale: 1.06; opacity: 0.92; }
+.exp-featured__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.85; scale: 1; }
 .exp-featured__body {
   position: absolute;
   left: 0; right: 0; bottom: 0;
@@ -349,8 +395,7 @@ p { line-height: 1.6; }
   position: relative; border-radius: 0; overflow: hidden; aspect-ratio: 4 / 5; margin: 0;
   transform: none !important;
 }
-.gallery img { scale: 1; transition: scale 0.6s var(--ease); }
-.gallery figure:hover img { scale: 1.06; }
+.gallery img { scale: 1; }
 .gallery figcaption {
   position: absolute; left: 0; right: 0; bottom: 0;
   padding: 40px 18px 16px;
@@ -457,7 +502,10 @@ p { line-height: 1.6; }
 .site-footer h4 { font-family: var(--font-display); font-size: 16px; font-weight: 500; color: #fff; letter-spacing: 0.02em; }
 .site-footer a { color: rgba(255,255,255,0.7); }
 .site-footer a:hover { color: #fff; }
-.site-footer__brand img { height: 40px; }
+.site-footer__brand img { height: 96px; width: auto; }
+@media (max-width: 560px) {
+  .site-footer__brand img { height: 68px; }
+}
 .site-footer__bottom { border-top: 1px solid rgba(255,255,255,0.14); color: rgba(255,255,255,0.45); }
 .site-footer__social a { border-color: rgba(255,255,255,0.25); }
 .site-footer__social a:hover { background: #fff; border-color: #fff; color: #000; }
@@ -799,19 +847,25 @@ p { line-height: 1.6; }
 }
 .exp-card:hover .exp-card__media img.s1-parallax,
 .svc-card:hover .svc-card__img img.s1-parallax,
-.post-card:hover .post-card__img img.s1-parallax,
-.gallery figure:hover img.s1-parallax,
 .product-card:hover .product-card__img img.s1-parallax {
   scale: 1.12;
 }
 
 /* Neutralize legacy style.css hover zooms (they target `transform` and would
-   override the parallax translate3d). Zoom is handled via `scale` below. */
+   override the parallax translate3d). Links keep a gentle `scale` zoom;
+   images that are NOT links get NO hover effect at all — we force exactly the
+   parallax values so nothing moves/diffs on hover. */
 .exp-card:hover .exp-card__media img,
-.gallery figure:hover img,
-.svc-card:hover .svc-card__img img,
-.post-card:hover .post-card__img img {
+.svc-card:hover .svc-card__img img {
   transform: none;
+}
+.gallery figure:hover img,
+.post-card:hover .post-card__img img,
+.exp-featured:hover .exp-featured__media img,
+.team-card:hover .team-card__img img {
+  transform: translate3d(0, var(--py, 0px), 0) !important;
+  scale: 1.08 !important;
+  transition: none !important;
 }
 .product-card__img img {
   scale: 1;
@@ -823,8 +877,7 @@ p { line-height: 1.6; }
 }
 .exp-card:hover .exp-card__media img.s1-parallax,
 .svc-card:hover .svc-card__img img.s1-parallax,
-.post-card:hover .post-card__img img.s1-parallax,
-.gallery figure:hover img.s1-parallax {
+.product-card:hover .product-card__img img.s1-parallax {
   transform: translate3d(0, var(--py, 0px), 0);
 }
 
@@ -913,14 +966,75 @@ p { line-height: 1.6; }
   .eyebrow--line::before { transition: none; }
 }
 
-/* ---------- Hand cursor on every linkable surface ---------- */
+/* ---------- Glass pill header: nav + mobile refinements ---------- */
+.main-nav { gap: 2px; }
+.main-nav a, .main-nav button.nav-link {
+  padding: 7px 13px;
+  border-radius: 999px;
+  transition: background 0.3s var(--ease), color 0.3s var(--ease);
+  white-space: nowrap;
+}
+.main-nav a:hover, .main-nav button.nav-link:hover {
+  background: rgba(26, 26, 26, 0.07);
+  color: var(--ink);
+}
+.main-nav a.is-active { background: var(--ink); color: #fff; text-decoration: none; }
+.header-cta { gap: 6px; }
+.lang-select__btn, .cart-btn { background: rgba(26,26,26,0.04); border: 0; }
+.lang-select__btn:hover, .cart-btn:hover { background: rgba(26,26,26,0.1); }
+.header-cta .btn--outline { height: 38px; padding: 0 16px; background: rgba(26,26,26,0.04); border: 0; }
+.header-cta .btn--outline:hover { background: var(--ink); color: #fff; }
+/* Dropdown glass inside the pill */
+.dropdown {
+  background: rgba(250, 245, 236, 0.92);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid rgba(255,255,255,0.6);
+  box-shadow: 0 18px 44px rgba(26,26,26,0.14);
+  border-radius: 16px;
+}
+
+/* ---------- Mobile: full-screen glass drawer under the pill ---------- */
+@media (max-width: 760px) {
+  /* backdrop-filter on ANY ancestor creates a containing block that traps the
+     fixed drawer; drop it on the whole header when the menu is open. */
+  body.menu-open .site-header,
+  body.menu-open .site-header__inner {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    filter: none !important;
+    transform: none !important;
+  }
+  body.menu-open .site-header__inner {
+    background: rgba(250, 245, 236, 0.98);
+  }
+  .main-nav {
+    inset: 0 !important;
+    width: 100% !important;
+    padding: 96px 20px 26px !important;
+    justify-content: flex-start;
+    background: rgba(250, 245, 236, 0.94) !important;
+    -webkit-backdrop-filter: blur(22px) saturate(160%);
+    backdrop-filter: blur(22px) saturate(160%);
+    border-bottom: 1px solid rgba(255,255,255,0.6) !important;
+    box-shadow: 0 30px 60px rgba(26, 26, 26, 0.18);
+  }
+  .main-nav a, .main-nav button.nav-link {
+    font-size: 17px;
+    padding: 14px 12px;
+    border-radius: 14px;
+    font-weight: 500;
+  }
+  .main-nav a.is-active { background: var(--ink); color: #fff; }
+}
+
+/* ---------- Hand cursor ONLY on clickable/linkable surfaces ---------- */
 a, a * { cursor: pointer; }
 a img, a svg { cursor: pointer; }
 button, [role="button"] { cursor: pointer; }
-.svc-card, .exp-card, .rev-platform, .rev-card, .post-card, .team-card,
-.product-card, .contact-card, .exp-featured, .gallery figure {
-  cursor: pointer;
-}
+/* Cards where the WHOLE surface triggers an action (reserva card → WhatsApp,
+   product image → lightbox). Everything else keeps the default arrow. */
+.svc-card, .product-card__img { cursor: pointer; }
 
 /* ---------- Smooth page transitions (View Transitions API) ---------- */
 @view-transition {
