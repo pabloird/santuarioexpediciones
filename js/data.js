@@ -340,22 +340,6 @@ const POSTS = [
     title: { es: "Llegaron los hongos", en: "The mushrooms are here", fr: "Les champignons sont arrivés", pt: "Os cogumelos chegaram" },
     body: { es: "La temporada de hongos llegó al bosque esclerófilo. Es una época perfecta para una expedición fotográfica. Aprovecha de conocerlos antes de que se vayan.", en: "Mushroom season has arrived in the sclerophyll forest. It's a perfect time for a photography expedition. Enjoy them before they're gone.", fr: "La saison des champignons est arrivée dans la forêt sclérophylle. Une période idéale pour une expédition photographique. Profitez-en avant qu'ils ne disparaissent.", pt: "A temporada de cogumelos chegou à mata esclerófila. É uma época perfeita para uma expedição fotográfica. Aproveite para conhecê-los antes que partam." }
   },
-  {
-    id: "trip-foto",
-    img: "assets/img/news-trip-foto.svg",
-    dateSort: "2024-03",
-    date: { es: "03 de marzo de 2024", en: "March 3, 2024", fr: "3 mars 2024", pt: "3 de março de 2024" },
-    title: { es: "El trip fotográfico es uno de los preferidos", en: "The photo trip is one of the favorites", fr: "Le trip photo est l'un des préférés", pt: "O trip fotográfico é um dos preferidos" },
-    body: { es: "Para quienes buscan tomar las mejores fotografías, no preocuparse del remado, y simplemente explorar en manos del guía experto los rincones de mayor belleza natural del humedal, en nuestro trip fotográfico personalizado el guía te rema y tú sólo te ocupas de disfrutar junto a tu cámara.", en: "For those looking to take the best photographs without worrying about paddling, simply exploring the wetland's most beautiful corners in the hands of an expert guide: in our personalised photo trip the guide paddles for you and you just enjoy your camera.", fr: "Pour celles et ceux qui veulent réussir les plus belles photos sans se soucier de pagayer : dans notre trip photo personnalisé, le guide pagaie pour vous et vous n'avez qu'à profiter, appareil en main, des plus beaux recoins du marais.", pt: "Para quem busca fazer as melhores fotos sem se preocupar em remar: em nosso trip fotográfico personalizado, o guia rema por você e você só precisa aproveitar, câmera na mão, os recantos mais belos do pântano." }
-  },
-  {
-    id: "flamencos",
-    img: "assets/img/news-flamencos.svg",
-    dateSort: "2023-05",
-    date: { es: "16 de mayo de 2023", en: "May 16, 2023", fr: "16 mai 2023", pt: "16 de maio de 2023" },
-    title: { es: "Llega el otoño y los flamencos nos visitan", en: "Autumn arrives and flamingos visit us", fr: "L'automne arrive et les flamants nous visitent", pt: "O outono chega e os flamingos nos visitam" },
-    body: { es: "Cada año, al llegar el otoño, diferentes aves migratorias visitan el humedal, como descanso de un largo viaje, refugio, o simplemente buscando alimento y un lugar seguro y tranquilo para pasar los meses de invierno.", en: "Every year, when autumn arrives, different migratory birds visit the wetland — as a rest stop on a long journey, as shelter, or simply looking for food and a safe, quiet place to spend the winter months.", fr: "Chaque année, à l'arrivée de l'automne, différents oiseaux migrateurs visitent le marais — escale d'un long voyage, refuge, ou simple recherche de nourriture et d'un lieu sûr et paisible pour passer les mois d'hiver.", pt: "Todos os anos, na chegada do outono, diferentes aves migratórias visitam o pântano — como parada de uma longa viagem, abrigo, ou simplesmente em busca de alimento e de um lugar seguro e tranquilo para passar os meses de inverno." }
-  }
 ];
 
 const fmtCLP = (n) => "$" + n.toLocaleString("es-CL").replace(/\./g, ".") + " CLP";

@@ -17,7 +17,7 @@
   <meta name="twitter:image" content="https://santuarioexpediciones.com/assets/img/hero-poster-2.webp">
   <link rel="icon" type="image/png" href="assets/img/logo.png">
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/s1lex.css?v=20260815-2">
+  <link rel="stylesheet" href="css/s1lex.css?v=20260815-9">
 </head>
 <body>
   <div id="headerSlot"></div>
@@ -92,7 +92,7 @@
           </article>
           <article class="exp-card reveal" data-delay="3">
             <a class="exp-card__media" href="rutas-etnoculturales.html" aria-label="Rutas etnoculturales" data-i18n-aria="home.c4.aria">
-              <img src="assets/img/rutas.webp" alt="Ruta etnocultural con la comunidad" data-i18n-alt="home.c4.imgAlt" loading="lazy">
+              <img src="assets/img/rutas-etnoculturales-home.webp" alt="Ruta etnocultural con artesanía en arcilla junto al humedal" data-i18n-alt="home.c4.imgAlt" loading="lazy" width="1536" height="1024">
               <span class="exp-card__tag" data-i18n="home.c4.tag">⏱ 3 h · 8 h</span>
             </a>
             <div class="exp-card__body">
@@ -177,13 +177,11 @@
             <h3>Pablo Rosés Dietz</h3>
             <p style="color:#767676" data-i18n="team.p1.role">Fundador &amp; guía</p>
           </article>
-          <article class="team-card reveal" data-delay="1">
-            <div class="team-card__img"><img src="assets/img/equipo-cecilia.svg" alt="Cecilia Arbos" loading="lazy"></div>
+          <article class="team-card team-card--text reveal" data-delay="1">
             <h3>Cecilia Arbos</h3>
             <p style="color:#767676" data-i18n="team.p2.role">Guía &amp; tienda</p>
           </article>
-          <article class="team-card reveal" data-delay="2">
-            <div class="team-card__img"><img src="assets/img/equipo-daniel.svg" alt="Daniel Virgues" loading="lazy"></div>
+          <article class="team-card team-card--text reveal" data-delay="2">
             <h3>Daniel Virgues</h3>
             <p style="color:#767676" data-i18n="team.p3.role">Camping &amp; expediciones</p>
           </article>
@@ -318,11 +316,20 @@
     </section>
   </main>
 
+  <script>
+    // Keep the social proof immediately after the featured two-day expedition.
+    (() => {
+      const expediciones = document.getElementById('expediciones');
+      const resenas = document.getElementById('resenas');
+      if (expediciones && resenas) expediciones.after(resenas);
+    })();
+  </script>
+
   <div id="footerSlot"></div>
 
   <script src="js/i18n.js"></script>
-  <script src="js/data.js"></script>
-  <script src="js/main.js?v=20260815-3"></script>
+  <script src="js/data.js?v=20260815-9"></script>
+  <script src="js/main.js?v=20260815-9"></script>
   <script src="js/s1lex.js"></script>
 </body>
 </html>
