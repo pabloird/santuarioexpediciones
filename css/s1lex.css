@@ -422,6 +422,10 @@ p { line-height: 1.6; }
 .team-card__img { border-radius: 0; aspect-ratio: 3 / 4; margin-bottom: 20px; }
 .team-card h3 { font-family: var(--font-display); font-size: 26px; font-weight: 500; letter-spacing: 0.01em; margin-bottom: 4px; }
 #main .team-card p { font-size: 14px; color: var(--gray); }
+.team-card--text {
+  padding: 20px 0 18px;
+  border-top: 1px solid rgba(29, 40, 36, 0.25);
+}
 
 /* ---------- Reviews — hairlines, no boxes ---------- */
 .rev-platforms { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; max-width: none; margin: 0 0 clamp(56px, 6vw, 72px); border-top: 1px solid var(--ink); }
@@ -607,8 +611,24 @@ p { line-height: 1.6; }
 .svc-card__img { aspect-ratio: 3 / 4; margin-bottom: 20px; position: relative; }
 .svc-card__img img { scale: 1; transition: scale 0.6s var(--ease); }
 .svc-card:hover .svc-card__img img { scale: 1.04; }
+.svc-card__media-pill {
+  position: absolute;
+  z-index: 2;
+  top: 14px;
+  left: 14px;
+  max-width: calc(100% - 28px);
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: rgba(248, 245, 237, 0.94);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  box-shadow: 0 3px 14px rgba(12, 27, 22, 0.14);
+}
 .svc-card__badge {
-  top: 14px; left: 14px;
+  top: 14px; right: 14px; left: auto;
   background: var(--paper);
   color: var(--ink);
   font-size: 11px;
@@ -618,6 +638,12 @@ p { line-height: 1.6; }
   padding: 6px 12px;
   border-radius: var(--radius-pill);
   box-shadow: none;
+}
+.svc-card__badge + .svc-card__media-pill {
+  max-width: calc(100% - 136px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .svc-card__body { padding: 0; display: flex; flex-direction: column; flex: 1; }
 .svc-card__cat { font-size: 13px; font-weight: 400; letter-spacing: 0.02em; text-transform: none; color: var(--gray); margin-bottom: 8px; }
@@ -1052,4 +1078,212 @@ button, [role="button"] { cursor: pointer; }
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root),
   ::view-transition-new(root) { animation: none; }
+}
+
+/* ============================================================
+   Production refinement — header safety, editorial rhythm and motion
+   These rules intentionally come last: they resolve the conflicts between
+   the original system and the floating-header experiment above.
+   ============================================================ */
+
+:root {
+  --paper: #f8f5ed;
+  --paper-soft: #eee8db;
+  --ink: #1d2824;
+  --ink-soft: #64706a;
+  --accent: #b55a2b;
+  --green: #183f35;
+  --green-bright: #245545;
+  --container: 1360px;
+}
+
+html { scroll-padding-top: 120px; }
+body { overflow-x: hidden; }
+
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 200;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  transform: translateY(-160%);
+  transition: transform 0.2s var(--ease);
+}
+.skip-link:focus { transform: translateY(0); }
+
+:focus-visible {
+  outline: 3px solid #e9ad61;
+  outline-offset: 3px;
+}
+
+/* Keep the floating navigation deliberate without making it compete with the
+   hero copy. The wider, bounded frame also has room for translated labels. */
+.site-header__inner {
+  width: min(1360px, calc(100% - 48px));
+  max-width: none;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 16px;
+  padding: 0 14px 0 18px;
+  background: rgba(250, 248, 242, 0.93);
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 14px 36px rgba(12, 27, 22, 0.12), inset 0 1px 0 rgba(255,255,255,0.72);
+}
+.site-header.scrolled .site-header__inner {
+  background: rgba(250, 248, 242, 0.98);
+  box-shadow: 0 16px 40px rgba(12, 27, 22, 0.16), inset 0 1px 0 rgba(255,255,255,0.72);
+}
+.brand img { height: 46px; }
+.main-nav { gap: 0; }
+.main-nav a, .main-nav button.nav-link {
+  padding: 7px 11px;
+  font-size: 12.5px;
+  font-weight: 500;
+}
+.main-nav a.is-active { background: var(--green); color: #fff; }
+.header-cta .btn--outline {
+  background: var(--green);
+  color: #fff;
+  height: 38px;
+  padding-inline: 15px;
+}
+.header-cta .btn--outline:hover { background: var(--green-bright); }
+
+/* All image heroes share a safe caption area. This prevents multi-line titles
+   from ever travelling into the navigation at common desktop heights. */
+.s1-hero, .hero, .shop-banner { margin-top: -80px; }
+.hero {
+  min-height: max(720px, 84vh) !important;
+  align-items: flex-end;
+}
+.hero__content {
+  width: min(980px, 100%);
+  padding-top: 176px;
+  padding-bottom: clamp(48px, 6vw, 82px);
+}
+.hero h1 {
+  max-width: 11ch;
+  font-size: clamp(48px, 6.2vw, 86px);
+  line-height: 1.02;
+  letter-spacing: 0.012em;
+  text-wrap: balance;
+}
+.hero__eyebrow { letter-spacing: 0.12em; }
+.hero__overlay {
+  background: linear-gradient(180deg, rgba(10, 22, 18, 0.62) 0%, rgba(10, 22, 18, 0.15) 45%, rgba(10, 22, 18, 0.8) 100%);
+}
+.s1-hero__caption { padding-top: 156px; }
+.s1-hero h1, .section__head h1, .section__head h2 { text-wrap: balance; }
+.section__head .btn { margin-top: 8px; }
+
+.contact-arrival {
+  position: relative;
+  margin: 0 0 clamp(44px, 6vw, 72px);
+  overflow: hidden;
+  background: var(--paper-soft);
+}
+.contact-arrival img {
+  width: 100%;
+  height: clamp(320px, 44vw, 520px);
+  object-fit: cover;
+  object-position: center 58%;
+  transition: transform 0.7s var(--ease);
+}
+.contact-arrival:hover img { transform: scale(1.025); }
+.contact-arrival figcaption {
+  position: absolute;
+  right: 18px;
+  bottom: 16px;
+  padding: 8px 11px;
+  background: rgba(248, 245, 237, 0.92);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.btn { transition: transform 0.24s var(--ease), background 0.24s var(--ease), color 0.24s var(--ease), border-color 0.24s var(--ease), box-shadow 0.24s var(--ease); }
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0) scale(0.985); }
+.exp-card, .svc-card, .product-card, .contact-card { transition: transform 0.35s var(--ease), background 0.35s var(--ease), box-shadow 0.35s var(--ease); }
+
+/* The chat control appears after an image hero, rather than masking its CTA
+   or a marquee at the bottom edge of the opening composition. */
+.wa-float {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px) scale(0.94);
+  pointer-events: none;
+  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease), visibility 0.25s;
+}
+.wa-float.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  pointer-events: auto;
+}
+
+/* Move to the drawer before translated navigation can become crowded. */
+@media (max-width: 1120px) {
+  .site-header__inner { width: min(100% - 40px, 1040px); }
+  .brand__word { display: none; }
+  .menu-toggle { display: flex; position: relative; z-index: 2; }
+  .main-nav {
+    position: fixed;
+    inset: 0 !important;
+    z-index: 1;
+    width: 100% !important;
+    padding: 104px 24px 28px !important;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 2px;
+    background: rgba(248, 245, 237, 0.97) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    backdrop-filter: blur(20px) saturate(140%);
+    box-shadow: 0 24px 60px rgba(12, 27, 22, 0.18);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-12px);
+    transition: opacity 0.25s ease, transform 0.35s var(--ease), visibility 0.35s;
+  }
+  body.menu-open .main-nav { opacity: 1; visibility: visible; transform: none; }
+  .main-nav a, .main-nav button.nav-link { padding: 14px 12px; border-radius: 12px; font-size: 17px; }
+  .has-dropdown { width: 100%; }
+  .dropdown { position: static; display: none; min-width: 0; margin: 2px 0 6px; padding: 4px; opacity: 1; visibility: visible; transform: none; box-shadow: none; }
+  .has-dropdown:focus-within .dropdown, .has-dropdown:hover .dropdown { display: block; }
+  .header-cta .btn--outline { display: none; }
+}
+
+@media (max-width: 760px) {
+  .container, .container--narrow { width: calc(100% - 40px); }
+  .site-header__inner { width: calc(100% - 24px); height: 58px; margin-top: 10px; padding-inline: 12px; }
+  .brand img { height: 40px; }
+  .header-cta { gap: 2px; }
+  .lang-select__btn, .cart-btn { width: 38px; height: 38px; padding: 0; justify-content: center; }
+  .lang-select__btn .caret { display: none; }
+  .s1-hero, .hero, .shop-banner { margin-top: -68px; }
+  .hero { min-height: max(680px, 100vh) !important; }
+  .hero__content { padding: 142px 20px 108px; }
+  .hero h1 { max-width: 9ch; font-size: clamp(46px, 14.5vw, 66px); line-height: 1; }
+  .hero__eyebrow { font-size: 11px; margin-bottom: 14px; }
+  .hero__actions { gap: 10px; }
+  .hero__actions .btn { min-width: 0; flex: 1 1 145px; }
+  .s1-hero { min-height: 100vh; aspect-ratio: auto; }
+  .s1-hero__caption { padding: 144px 20px 42px; }
+  .s1-hero h1 { font-size: clamp(50px, 15vw, 70px); line-height: 0.98; }
+  .svc-card__media-pill { top: 10px; left: 10px; max-width: calc(100% - 20px); font-size: 10.5px; }
+  .svc-card__badge { top: 10px; right: 10px; }
+  .contact-arrival { margin-bottom: 44px; }
+  .contact-arrival img { height: clamp(300px, 100vw, 440px); object-position: 58% center; }
+  .contact-arrival figcaption { right: 10px; bottom: 10px; max-width: calc(100% - 20px); font-size: 11px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
 }

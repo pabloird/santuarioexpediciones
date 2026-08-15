@@ -372,6 +372,7 @@
     var lang = getLang();
     var name = s["name_" + lang] || s.name;
     var tag = s["tag_" + lang] || s.tag || s["cat_" + lang] || s.cat;
+    var mediaMeta = tag + " · ⏱ " + s.dur;
     var desc = s["desc_" + lang] || s.desc || "";
     var badge = s.bestseller ? '<span class="svc-card__badge">★ ' + pick(BADGE_LABELS["Más vendido"]) + "</span>" : "";
     var price = fmtCLP(s.price);
@@ -384,7 +385,7 @@
     return (
       '<article class="svc-card">' +
         '<a class="svc-card__link" target="_blank" rel="noopener" href="' + wa + '" aria-label="' + name + ' — ' + t("ui.waAria") + '">' +
-          '<div class="svc-card__img">' + badge + '<img src="' + s.img + '" alt="' + name + '" loading="lazy"></div>' +
+          '<div class="svc-card__img">' + badge + '<span class="svc-card__media-pill">' + mediaMeta + '</span><img src="' + s.img + '" alt="' + name + '" loading="lazy"></div>' +
         "</a>" +
         '<div class="svc-card__body">' +
           '<span class="svc-card__cat">' + tag + "</span>" +
@@ -544,9 +545,15 @@
     var nav = document.getElementById("mainNav");
 
     var toTop = document.getElementById("toTop");
+    var waFloat = document.querySelector(".wa-float");
+    var hero = document.querySelector(".s1-hero, .hero, .shop-banner");
     function onScroll() {
       if (header) header.classList.toggle("scrolled", window.scrollY > 10);
       if (toTop) toTop.classList.toggle("show", window.scrollY > 600);
+      if (waFloat) {
+        var pastHero = !hero || window.scrollY > Math.max(0, hero.offsetHeight - 120);
+        waFloat.classList.toggle("is-visible", pastHero);
+      }
     }
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
