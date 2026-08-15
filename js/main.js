@@ -68,7 +68,7 @@
   }
 
   function waUrl(kind) {
-    var msg = kind === "products" ? t("ui.waShopDefault") : t("ui.waDefault");
+    var msg = kind === "products" ? t("ui.waShopDefault") : kind === "two-day" ? t("ui.waTwoDay") : t("ui.waDefault");
     return "https://wa.me/" + SITE.wa + "?text=" + encodeURIComponent(msg);
   }
 

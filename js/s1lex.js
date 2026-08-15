@@ -151,15 +151,19 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     initMarquee();
-    initSplits();
     initParallax();
     initEyebrows();
+    // Wait for the self-hosted display font before measuring word widths.
+    // Safari can otherwise split the same heading differently on refresh.
+    var fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+    fontsReady.then(initSplits);
   });
   // Re-split in case DOMContentLoaded already fired (scripts order).
   if (document.readyState !== "loading") {
     initMarquee();
-    initSplits();
     initParallax();
     initEyebrows();
+    var fontsReadyNow = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+    fontsReadyNow.then(initSplits);
   }
 })();

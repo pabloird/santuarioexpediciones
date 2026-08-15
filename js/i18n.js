@@ -49,6 +49,7 @@ const I18N = {
   "ui.waAria": { es: "Escríbenos por WhatsApp", en: "Contact us on WhatsApp", fr: "Écrivez-nous sur WhatsApp", pt: "Escreva-nos no WhatsApp" },
   "ui.toTopAria": { es: "Volver arriba", en: "Back to top", fr: "Revenir en haut", pt: "Voltar ao topo" },
   "ui.waDefault": { es: "Hola qué tal, quisieras saber más de nuestras expediciones?", en: "Hi! Would you like to know more about our expeditions?", fr: "Bonjour, souhaitez-vous en savoir plus sur nos expéditions ?", pt: "Olá! Gostaria de saber mais sobre nossas expedições?" },
+  "ui.waTwoDay": { es: "Hola, quiero reservar la expedición de 2 días con kayak y glamping en el humedal.", en: "Hi, I'd like to book the 2-day kayak and glamping expedition by the wetland.", fr: "Bonjour, je souhaite réserver l'expédition de 2 jours en kayak et glamping au bord du marais.", pt: "Olá, quero reservar a expedição de 2 dias com caiaque e glamping junto ao pântano." },
   "ui.waShopDefault": { es: "Hola qué tal, quisieras saber más de nuestros productos?", en: "Hi! Would you like to know more about our products?", fr: "Bonjour, souhaitez-vous en savoir plus sur nos produits ?", pt: "Olá! Gostaria de saber mais sobre nossos produtos?" },
   "ui.waReserve": { es: "Hola, quiero reservar", en: "Hi, I'd like to book", fr: "Bonjour, je souhaite réserver", pt: "Olá, quero reservar" },
   "ui.waBuy": { es: "Hola! Quiero comprar:", en: "Hi! I'd like to buy:", fr: "Bonjour ! Je souhaite acheter :", pt: "Olá! Quero comprar:" },
