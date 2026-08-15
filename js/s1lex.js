@@ -114,6 +114,22 @@
     update();
   }
 
+  /* ---------- Safari-safe hero video bootstrap ---------- */
+  function initHeroVideos() {
+    document.querySelectorAll(".hero video, .s1-hero video").forEach(function (video) {
+      video.muted = true;
+      video.setAttribute("muted", "");
+      video.setAttribute("playsinline", "");
+      var tryPlay = function () {
+        var promise = video.play();
+        if (promise && promise.catch) promise.catch(function () {});
+      };
+      video.addEventListener("loadedmetadata", tryPlay, { once: true });
+      video.addEventListener("canplay", tryPlay, { once: true });
+      if (video.readyState >= 1) tryPlay();
+    });
+  }
+
   /* ---------- Scrolling marquee ---------- */
   var MARQUEE_PAGES = ["/index.html", "/tienda.html", "/reserva.html"];
   function initMarquee() {
@@ -151,6 +167,7 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     initMarquee();
+    initHeroVideos();
     initParallax();
     initEyebrows();
     // Wait for the self-hosted display font before measuring word widths.
@@ -161,6 +178,7 @@
   // Re-split in case DOMContentLoaded already fired (scripts order).
   if (document.readyState !== "loading") {
     initMarquee();
+    initHeroVideos();
     initParallax();
     initEyebrows();
     var fontsReadyNow = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
