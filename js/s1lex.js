@@ -48,6 +48,9 @@
     wrapWords(el);
     el.classList.add("is-split");
     el.dataset.splitDone = "1";
+    // The hero is already visible on first paint. Revealing it immediately
+    // avoids a WebKit IntersectionObserver race after page reloads.
+    if (el.closest(".s1-hero")) { el.classList.add("is-in"); return; }
     if (REDUCED) { el.classList.add("is-in"); return; }
     var io = new IntersectionObserver(function (entries, obs) {
       entries.forEach(function (e) {
@@ -120,8 +123,8 @@
      qu'en mobile, Safari n'honorant pas l'attribut `media` sur <source>. */
   var HERO_MOBILE_MQ = "(max-width: 991px)";
   var HERO_VIDEOS = [
-    { src: "assets/video/hero-2-lite.mp4" }, // mobile (portrait)
-    { src: "assets/video/hero-2.web.mp4" }   // desktop (paysage)
+    { src: "assets/video/hero-3-lite.mp4" }, // mobile (portrait)
+    { src: "assets/video/hero-3.web.mp4" }   // desktop (paysage)
   ];
 
   function initHeroVideos() {
@@ -163,6 +166,16 @@
       // la demande de lecture n'est pas perdue.
       tryPlay();
       window.addEventListener("load", tryPlay, { once: true });
+
+      // Safari peut bloquer l'autoplay selon le réglage du site. Un clic sur
+      // le héros constitue alors une interaction utilisateur autorisée.
+      var hero = video.closest(".s1-hero, .hero");
+      if (hero) {
+        hero.addEventListener("click", function (event) {
+          if (event.target.closest("a, button")) return;
+          if (video.paused) tryPlay();
+        });
+      }
 
       // Échange mobile ↔ desktop au resize (rotation, redimensionnement).
       var mql = window.matchMedia(HERO_MOBILE_MQ);

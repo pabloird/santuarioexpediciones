@@ -203,10 +203,22 @@ p { line-height: 1.6; }
   object-fit: cover;
   animation: none;
 }
+.s1-hero__media video {
+  display: block;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+.s1-hero__media video::-webkit-media-controls,
+.s1-hero__media video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
 .s1-hero__scrim {
   position: absolute; inset: 0; z-index: 1;
   background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.22) 45%, rgba(0,0,0,0.72) 100%);
   pointer-events: none;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 .s1-hero__caption {
   position: absolute;
@@ -215,6 +227,8 @@ p { line-height: 1.6; }
   padding: 0 calc(max(24px, (100% - 1400px) / 2)) clamp(40px, 5vw, 64px);
   color: #fff;
   max-width: 980px;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 .s1-hero__eyebrow {
   font-size: 13px;
