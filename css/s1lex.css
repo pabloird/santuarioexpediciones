@@ -213,6 +213,9 @@ p { line-height: 1.6; }
   display: none !important;
   -webkit-appearance: none;
 }
+.s1-hero__safari-fallback { display: none; }
+.is-safari .s1-hero__media video { display: none; }
+.is-safari .s1-hero__safari-fallback { display: block; }
 .s1-hero__scrim {
   position: absolute; inset: 0; z-index: 1;
   background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.22) 45%, rgba(0,0,0,0.72) 100%);
@@ -833,6 +836,9 @@ p { line-height: 1.6; }
    ============================================================ */
 
 /* ---------- Word-by-word headline reveal ---------- */
+#main h1.is-split-pending, #main h2.display.is-split-pending {
+  visibility: hidden;
+}
 #main h1 .w, #main h2.display .w {
   display: inline-block;
   overflow: hidden;
@@ -856,12 +862,7 @@ p { line-height: 1.6; }
   gap: 12px;
 }
 .eyebrow--line::before {
-  content: "0" counter(s1sec);
-  font-family: var(--font-display);
-  font-size: 13px;
-  letter-spacing: 0.12em;
-  color: var(--gray);
-  font-variant-numeric: tabular-nums;
+  display: none;
 }
 .eyebrow--line::after {
   content: "";

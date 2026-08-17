@@ -13,6 +13,15 @@
   /* ---------- Word-by-word reveal of big headlines ---------- */
   var splitEls = [];
 
+  function prepareSplitHeadlines() {
+    document.querySelectorAll("#main h1, #main h2.display").forEach(function (el) {
+      el.classList.add("is-split-pending");
+      el.classList.remove("reveal");
+      var sectionHead = el.closest(".section__head.reveal");
+      if (sectionHead) sectionHead.classList.remove("reveal");
+    });
+  }
+
   function wrapWords(el) {
     var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
     var nodes = [];
@@ -46,6 +55,7 @@
     // for this heading, so drop main.js's .reveal handling on it.
     el.classList.remove("reveal");
     wrapWords(el);
+    el.classList.remove("is-split-pending");
     el.classList.add("is-split");
     el.dataset.splitDone = "1";
     // The hero is already visible on first paint. Revealing it immediately
@@ -66,6 +76,7 @@
 
   function clearSplit(el) {
     delete el.dataset.splitDone;
+    el.classList.add("is-split-pending");
     el.classList.remove("is-split", "is-in");
     if (el._io) { el._io.disconnect(); delete el._io; }
   }
@@ -128,6 +139,7 @@
   ];
 
   function initHeroVideos() {
+    if (document.documentElement.classList.contains("is-safari")) return;
     document.querySelectorAll(".hero video, .s1-hero video").forEach(function (video) {
       video.muted = true;
       video.defaultMuted = true;
@@ -226,6 +238,10 @@
       el.classList.add("eyebrow--line");
     });
   }
+
+  // Run before main.js handles DOMContentLoaded, so headings never receive
+  // both the generic block reveal and the word-by-word reveal.
+  prepareSplitHeadlines();
 
   document.addEventListener("DOMContentLoaded", function () {
     initMarquee();
