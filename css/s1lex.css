@@ -197,19 +197,16 @@ p { line-height: 1.6; }
   display: block;
   isolation: isolate;
 }
-.s1-hero__media { position: absolute; inset: 0; z-index: -2; overflow: hidden; background: #000; }
+.s1-hero__media { position: absolute; inset: 0; z-index: 0; overflow: hidden; background: #000; }
 .s1-hero__media video, .s1-hero__media img {
   width: 100%; height: 100%;
   object-fit: cover;
   animation: none;
 }
-/* Safari may briefly show its native Play glyph before autoplay begins. Keep
-   the media invisible until the browser has confirmed that it is playing. */
-.s1-hero__media video { opacity: 0; transition: opacity 180ms ease-out; }
-.s1-hero__media video.is-playing { opacity: 1; }
 .s1-hero__scrim {
-  position: absolute; inset: 0;
+  position: absolute; inset: 0; z-index: 1;
   background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.22) 45%, rgba(0,0,0,0.72) 100%);
+  pointer-events: none;
 }
 .s1-hero__caption {
   position: absolute;
@@ -239,6 +236,9 @@ p { line-height: 1.6; }
   text-shadow: 0 2px 30px rgba(0,0,0,0.25);
 }
 .s1-hero h1 em { font-style: normal; }
+@media (min-width: 600px) {
+  .s1-hero h1 .s1-hero__intro { white-space: nowrap; }
+}
 .s1-hero__sub {
   font-size: 19px;
   font-weight: 400;

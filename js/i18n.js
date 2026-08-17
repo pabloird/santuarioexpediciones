@@ -94,7 +94,7 @@ const I18N = {
 
   /* ---------- Accueil (index.html) ---------- */
   "home.heroEyebrow": { es: "Expediciones de naturaleza · Pichilemu", en: "Nature expeditions · Pichilemu", fr: "Expéditions nature · Pichilemu", pt: "Expedições de natureza · Pichilemu" },
-  "home.heroTitle": { es: "Bienvenido a <em>Santuario</em> Expediciones", en: "Welcome to <em>Santuario</em> Expediciones", fr: "Bienvenue à <em>Santuario</em> Expediciones", pt: "Bem-vindo a <em>Santuario</em> Expediciones" },
+  "home.heroTitle": { es: "<span class=\"s1-hero__intro\">Bienvenido a</span> <em>Santuario</em> Expediciones", en: "<span class=\"s1-hero__intro\">Welcome to</span> <em>Santuario</em> Expediciones", fr: "<span class=\"s1-hero__intro\">Bienvenue à</span> <em>Santuario</em> Expediciones", pt: "<span class=\"s1-hero__intro\">Bem-vindo a</span> <em>Santuario</em> Expediciones" },
   "home.heroSub": { es: "Explorando en silencio el humedal de las aves", en: "Silently exploring the birds' wetland", fr: "Explorer en silence le marais des oiseaux", pt: "Explorando em silêncio o pântano das aves" },
   "home.heroCta1": { es: "Explora las expediciones", en: "Explore the expeditions", fr: "Découvrir les expéditions", pt: "Explore as expedições" },
   "home.heroCta2": { es: "Reserva online", en: "Book online", fr: "Réserver en ligne", pt: "Reserve online" },

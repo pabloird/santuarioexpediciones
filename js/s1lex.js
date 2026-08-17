@@ -120,8 +120,8 @@
      qu'en mobile, Safari n'honorant pas l'attribut `media` sur <source>. */
   var HERO_MOBILE_MQ = "(max-width: 991px)";
   var HERO_VIDEOS = [
-    { src: "assets/video/hero-2-lite.mp4", poster: "assets/img/hero-poster-2.webp" }, // mobile (portrait)
-    { src: "assets/video/hero-2.web.mp4", poster: "assets/img/hero-poster.webp" }     // desktop (paysage)
+    { src: "assets/video/hero-2-lite.mp4" }, // mobile (portrait)
+    { src: "assets/video/hero-2.web.mp4" }   // desktop (paysage)
   ];
 
   function initHeroVideos() {
@@ -134,13 +134,12 @@
       video.setAttribute("playsinline", "");
       video.setAttribute("webkit-playsinline", "");
       video.removeAttribute("controls");
+      video.removeAttribute("poster");
 
       var tryPlay = function () {
         var promise = video.play();
         if (promise && promise.catch) promise.catch(function () {});
       };
-      var revealVideo = function () { video.classList.add("is-playing"); };
-      var hideVideo = function () { video.classList.remove("is-playing"); };
 
       function currentCfg() {
         return window.matchMedia(HERO_MOBILE_MQ).matches ? HERO_VIDEOS[0] : HERO_VIDEOS[1];
@@ -150,19 +149,20 @@
         var cfg = currentCfg();
         var want = new URL(cfg.src, window.location.href).href;
         if (video.src !== want) {
-          video.poster = cfg.poster;
           video.src = cfg.src;
           video.load();
           if (video.readyState >= 1) tryPlay();
         }
       }
 
-      video.addEventListener("loadedmetadata", tryPlay, { once: true });
-      video.addEventListener("canplay", tryPlay, { once: true });
-      video.addEventListener("playing", revealVideo);
-      video.addEventListener("pause", hideVideo);
+      video.addEventListener("loadedmetadata", tryPlay);
+      video.addEventListener("canplay", tryPlay);
       applySource();
-      if (!video.paused && video.readyState >= 2) revealVideo();
+      // Safari peut avoir déjà émis canplay avant DOMContentLoaded lorsque la
+      // source est définie directement dans le HTML. Rejouer ici garantit que
+      // la demande de lecture n'est pas perdue.
+      tryPlay();
+      window.addEventListener("load", tryPlay, { once: true });
 
       // Échange mobile ↔ desktop au resize (rotation, redimensionnement).
       var mql = window.matchMedia(HERO_MOBILE_MQ);
