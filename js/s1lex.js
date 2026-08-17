@@ -114,25 +114,65 @@
     update();
   }
 
-  /* ---------- Safari-safe hero video bootstrap ---------- */
+  /* ---------- Hero video bootstrap (Safari-safe) ----------
+     Safari n'honore pas l'attribut `media` sur <source> : il prend
+     toujours la première source supportée. On choisit donc la source
+     ET le poster en JS selon le viewport — fiable partout — et on
+     relance la lecture au clic si l'autoplay a été bloqué. */
+  var HERO_MOBILE_MQ = "(max-width: 991px)";
+  var HERO_VIDEOS = [
+    { src: "assets/video/hero-2-lite.mp4", poster: "assets/img/hero-poster-2.webp" }, // mobile (portrait)
+    { src: "assets/video/hero-2.web.mp4", poster: "assets/img/hero-poster.webp" }     // desktop (paysage)
+  ];
+
   function initHeroVideos() {
     document.querySelectorAll(".hero video, .s1-hero video").forEach(function (video) {
       video.muted = true;
       video.setAttribute("muted", "");
       video.setAttribute("playsinline", "");
+
       var tryPlay = function () {
         var promise = video.play();
         if (promise && promise.catch) promise.catch(function () {});
       };
+
+      function currentCfg() {
+        return window.matchMedia(HERO_MOBILE_MQ).matches ? HERO_VIDEOS[0] : HERO_VIDEOS[1];
+      }
+
+      function applySource() {
+        var cfg = currentCfg();
+        var want = new URL(cfg.src, window.location.href).href;
+        if (video.src !== want) {
+          video.poster = cfg.poster;
+          video.src = cfg.src;
+          video.load();
+          if (video.readyState >= 1) tryPlay();
+        }
+      }
+
       video.addEventListener("loadedmetadata", tryPlay, { once: true });
       video.addEventListener("canplay", tryPlay, { once: true });
-      if (video.readyState >= 1) tryPlay();
+      applySource();
+
+      // Échange mobile ↔ desktop au resize (rotation, redimensionnement).
+      var mql = window.matchMedia(HERO_MOBILE_MQ);
+      var onViewportChange = function () { applySource(); };
+      if (mql.addEventListener) mql.addEventListener("change", onViewportChange);
+      else if (mql.addListener) mql.addListener(onViewportChange);
+
+      // Si l'autoplay a été bloqué (réglages Safari, économie d'énergie…),
+      // la première interaction relance la lecture.
+      var resume = function () { if (video.paused) tryPlay(); };
+      video.addEventListener("click", resume);
+      video.addEventListener("touchstart", resume, { passive: true });
     });
   }
 
   /* ---------- Scrolling marquee ---------- */
   var MARQUEE_PAGES = ["/index.html", "/tienda.html", "/reserva.html"];
   function initMarquee() {
+    if (document.querySelector(".s1-marquee")) return; // anti double injection
     var path = window.location.pathname.split("/").pop() || "index.html";
     if (MARQUEE_PAGES.indexOf("/" + path) === -1 && MARQUEE_PAGES.indexOf(path) === -1) {
       return;
