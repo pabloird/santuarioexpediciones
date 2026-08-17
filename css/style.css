@@ -572,7 +572,7 @@ html[lang="pt"] .main-nav button.nav-link { padding: 10px 9px; font-size: 11.5px
 .exp-featured__body h3 {
   font-family: var(--font-display);
   font-size: clamp(26px, 3vw, 38px);
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.1;
   margin-bottom: 16px;
 }

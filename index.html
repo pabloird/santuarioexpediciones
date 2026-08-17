@@ -35,8 +35,8 @@
     <!-- ============ HERO — full-bleed video + caption ============ -->
     <section class="s1-hero" aria-label="Santuario Expediciones">
       <div class="s1-hero__media">
-        <!-- Source + poster choisis par js/s1lex.js (compat Safari : pas d'attribut media sur <source>) -->
-        <video autoplay muted loop playsinline preload="auto" poster="assets/img/hero-poster-2.webp"></video>
+        <!-- La source desktop est présente dès le parsing : Safari peut ainsi lancer la vidéo sans afficher de poster ni de bouton Play. JS choisit ensuite la version mobile si nécessaire. -->
+        <video src="assets/video/hero-2.web.mp4" autoplay muted loop playsinline webkit-playsinline preload="auto" aria-hidden="true" tabindex="-1"></video>
       </div>
       <div class="s1-hero__scrim"></div>
       <div class="s1-hero__caption">

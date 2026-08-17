@@ -115,10 +115,9 @@
   }
 
   /* ---------- Hero video bootstrap (Safari-safe) ----------
-     Safari n'honore pas l'attribut `media` sur <source> : il prend
-     toujours la première source supportée. On choisit donc la source
-     ET le poster en JS selon le viewport — fiable partout — et on
-     relance la lecture au clic si l'autoplay a été bloqué. */
+     La source desktop est définie dans le HTML pour que Safari puisse
+     démarrer la vidéo dès le premier rendu. On ne change ensuite la source
+     qu'en mobile, Safari n'honorant pas l'attribut `media` sur <source>. */
   var HERO_MOBILE_MQ = "(max-width: 991px)";
   var HERO_VIDEOS = [
     { src: "assets/video/hero-2-lite.mp4", poster: "assets/img/hero-poster-2.webp" }, // mobile (portrait)
@@ -128,13 +127,20 @@
   function initHeroVideos() {
     document.querySelectorAll(".hero video, .s1-hero video").forEach(function (video) {
       video.muted = true;
+      video.defaultMuted = true;
+      video.autoplay = true;
+      video.loop = true;
       video.setAttribute("muted", "");
       video.setAttribute("playsinline", "");
+      video.setAttribute("webkit-playsinline", "");
+      video.removeAttribute("controls");
 
       var tryPlay = function () {
         var promise = video.play();
         if (promise && promise.catch) promise.catch(function () {});
       };
+      var revealVideo = function () { video.classList.add("is-playing"); };
+      var hideVideo = function () { video.classList.remove("is-playing"); };
 
       function currentCfg() {
         return window.matchMedia(HERO_MOBILE_MQ).matches ? HERO_VIDEOS[0] : HERO_VIDEOS[1];
@@ -153,7 +159,10 @@
 
       video.addEventListener("loadedmetadata", tryPlay, { once: true });
       video.addEventListener("canplay", tryPlay, { once: true });
+      video.addEventListener("playing", revealVideo);
+      video.addEventListener("pause", hideVideo);
       applySource();
+      if (!video.paused && video.readyState >= 2) revealVideo();
 
       // Échange mobile ↔ desktop au resize (rotation, redimensionnement).
       var mql = window.matchMedia(HERO_MOBILE_MQ);

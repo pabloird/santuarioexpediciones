@@ -203,6 +203,10 @@ p { line-height: 1.6; }
   object-fit: cover;
   animation: none;
 }
+/* Safari may briefly show its native Play glyph before autoplay begins. Keep
+   the media invisible until the browser has confirmed that it is playing. */
+.s1-hero__media video { opacity: 0; transition: opacity 180ms ease-out; }
+.s1-hero__media video.is-playing { opacity: 1; }
 .s1-hero__scrim {
   position: absolute; inset: 0;
   background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.22) 45%, rgba(0,0,0,0.72) 100%);
