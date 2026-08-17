@@ -1,6 +1,6 @@
 /* ============================================================
    Santuario Expediciones — s1lex micro-interactions
-   Word-by-word headline reveal · soft image parallax ·
+   Stable headlines · soft image parallax ·
    scrolling marquee · editorial micro-details.
    Respects prefers-reduced-motion and touch devices.
    ============================================================ */
@@ -10,97 +10,14 @@
   var REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var TOUCH = window.matchMedia("(pointer: coarse)").matches;
 
-  /* ---------- Word-by-word reveal of big headlines ---------- */
-  var splitEls = [];
-
-  function prepareSplitHeadlines() {
+  /* ---------- Stable page headlines ---------- */
+  function disableHeadlineReveals() {
     document.querySelectorAll("#main h1, #main h2.display").forEach(function (el) {
-      el.classList.add("is-split-pending");
-      el.classList.remove("reveal");
+      el.classList.remove("reveal", "is-split-pending", "is-split", "is-in");
       var sectionHead = el.closest(".section__head.reveal");
       if (sectionHead) sectionHead.classList.remove("reveal");
     });
   }
-
-  function wrapWords(el) {
-    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
-    var nodes = [];
-    while (walker.nextNode()) {
-      if (walker.currentNode.textContent.trim()) nodes.push(walker.currentNode);
-    }
-    var idx = 0;
-    nodes.forEach(function (node) {
-      var frag = document.createDocumentFragment();
-      var parts = node.textContent.split(/\s+/);
-      parts.forEach(function (w) {
-        if (!w) return;
-        var wspan = document.createElement("span");
-        wspan.className = "w";
-        wspan.style.setProperty("--i", idx++);
-        var win = document.createElement("span");
-        win.className = "w-in";
-        win.textContent = w;
-        wspan.appendChild(win);
-        frag.appendChild(wspan);
-        frag.appendChild(document.createTextNode(" "));
-      });
-      node.parentNode.replaceChild(frag, node);
-    });
-    el.classList.add("is-split");
-  }
-
-  function splitHeadline(el) {
-    if (el.dataset.splitDone === "1") return;
-    // Avoid double-animation conflict: word-split becomes the ONLY entrance
-    // for this heading, so drop main.js's .reveal handling on it.
-    el.classList.remove("reveal");
-    wrapWords(el);
-    el.classList.remove("is-split-pending");
-    el.classList.add("is-split");
-    el.dataset.splitDone = "1";
-    // The hero is already visible on first paint. Revealing it immediately
-    // avoids a WebKit IntersectionObserver race after page reloads.
-    if (el.closest(".s1-hero")) { el.classList.add("is-in"); return; }
-    if (REDUCED) { el.classList.add("is-in"); return; }
-    var io = new IntersectionObserver(function (entries, obs) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) {
-          el.classList.add("is-in");
-          obs.unobserve(el);
-        }
-      });
-    }, { threshold: 0.25 });
-    io.observe(el);
-    el._io = io;
-  }
-
-  function clearSplit(el) {
-    delete el.dataset.splitDone;
-    el.classList.add("is-split-pending");
-    el.classList.remove("is-split", "is-in");
-    if (el._io) { el._io.disconnect(); delete el._io; }
-  }
-
-  function initSplits() {
-    splitEls = Array.prototype.slice.call(
-      document.querySelectorAll("#main h1, #main h2.display")
-    );
-    splitEls.forEach(splitHeadline);
-  }
-
-  // Language switch: main.js overwrites textContent/innerHTML, killing spans.
-  var lastLang = document.documentElement.lang || "es";
-  var langTimer = null;
-  new MutationObserver(function () {
-    var lang = document.documentElement.lang || "es";
-    if (lang === lastLang) return;
-    lastLang = lang;
-    clearTimeout(langTimer);
-    langTimer = setTimeout(function () {
-      splitEls.forEach(clearSplit);
-      initSplits();
-    }, 80);
-  }).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
 
   /* ---------- Soft parallax on images ---------- */
   function initParallax() {
@@ -239,19 +156,15 @@
     });
   }
 
-  // Run before main.js handles DOMContentLoaded, so headings never receive
-  // both the generic block reveal and the word-by-word reveal.
-  prepareSplitHeadlines();
+  // Run before main.js handles DOMContentLoaded. Main page titles are rendered
+  // once and are never rebuilt after the font or language code initializes.
+  disableHeadlineReveals();
 
   document.addEventListener("DOMContentLoaded", function () {
     initMarquee();
     initHeroVideos();
     initParallax();
     initEyebrows();
-    // Wait for the self-hosted display font before measuring word widths.
-    // Safari can otherwise split the same heading differently on refresh.
-    var fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
-    fontsReady.then(initSplits);
   });
   // Re-split in case DOMContentLoaded already fired (scripts order).
   if (document.readyState !== "loading") {
@@ -259,7 +172,5 @@
     initHeroVideos();
     initParallax();
     initEyebrows();
-    var fontsReadyNow = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
-    fontsReadyNow.then(initSplits);
   }
 })();

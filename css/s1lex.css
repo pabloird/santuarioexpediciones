@@ -835,24 +835,6 @@ p { line-height: 1.6; }
    s1lex micro-interactions (js/s1lex.js)
    ============================================================ */
 
-/* ---------- Word-by-word headline reveal ---------- */
-#main h1.is-split-pending, #main h2.display.is-split-pending {
-  visibility: hidden;
-}
-#main h1 .w, #main h2.display .w {
-  display: inline-block;
-  overflow: hidden;
-  vertical-align: bottom;
-}
-#main h1 .w-in, #main h2.display .w-in {
-  display: inline-block;
-  transform: translateY(115%);
-  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--i, 0) * 42ms);
-}
-#main h1.is-in .w-in, #main h2.display.is-in .w-in {
-  transform: translateY(0);
-}
-
 /* ---------- Eyebrow micro-detail: index number + short rule ---------- */
 #main { counter-reset: s1sec; }
 .section { counter-increment: s1sec; }
@@ -998,7 +980,6 @@ p { line-height: 1.6; }
 
 /* ---------- Reduced motion global ---------- */
 @media (prefers-reduced-motion: reduce) {
-  #main h1 .w-in, #main h2.display .w-in { transform: none; transition: none; }
   .s1-marquee__track { animation: none; }
   .s1-marquee__star { animation: none; }
   .exp-card__media img.s1-parallax,
