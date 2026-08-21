@@ -23,7 +23,7 @@
   --white: #ffffff;
 
   /* Typographie */
-  --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-display: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-body: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
 
   /* Espacement */

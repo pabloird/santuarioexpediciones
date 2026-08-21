@@ -33,7 +33,7 @@
   --accent: #1a1a1a;
   --green: #000000;
   --green-bright: #000000;
-  --font-display: "Underdog", "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: "Montserrat", "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-body: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --container: 1400px;
   --section-pad: clamp(72px, 9vw, 96px);
